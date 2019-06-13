@@ -32,7 +32,7 @@ class AdminController extends AbstractController
  */
     
 /**
- * @Route("/user/all", name="users")
+ * @Route("/admin/users", name="users")
 */
     public function Alluser( Request $request, ObjectManager $om)
     {
@@ -43,7 +43,7 @@ class AdminController extends AbstractController
     }
     
     /**
-    * @Route("/user/delete/{id}", name="user-delete")
+    * @Route("admin/user/delete/{id}", name="user-delete")
     */
     public function Deluser($id, Request $request, ObjectManager $om)
     {
@@ -54,8 +54,8 @@ class AdminController extends AbstractController
     
     
 /**
- * @Route("/user/new", name="user-new")
- * @Route("/user/{id}", name="user-edit")
+ * @Route("admin/user/new", name="user-new")
+ * @Route("admin/user/{id}", name="user-edit")
  */
         
     public function User(User $user=null, Request $request, ObjectManager $om,UserPasswordEncoderInterface $encoder)
