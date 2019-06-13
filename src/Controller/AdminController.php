@@ -32,36 +32,59 @@ class AdminController extends AbstractController
  */
     
 /**
- * @Route("/user/new", name="user-new")
- * @Route("/user/{}", name="user-edit")
- */
-    public function User(User $user=null, Request $request, ObjectManager $om,UserPasswordEncoderInterface $encoder)
+ * @Route("/user/all", name="users")
+*/
+    public function Alluser( Request $request, ObjectManager $om)
     {
-        // create a new actor entity
-        if (!$user) {
-            $user= new User();
-            
-        }
-        //  create FormBuilder from form factory service
-        $formUser = $this->createForm(UserType::class, $user);
-        $formUser->handleRequest($request);
-        
-        if ($formUser->isSubmitted() && $formUser->isValid()) {
-            
-            $pwd=$encoder->encodePassword($user,$user->getPassword());
-            $user->setPassword($pwd);
-            $om->persist($user);
-            $om->flush();
-            
-            return $this->redirectToRoute('login');
-            
-        }else {
-            return $this->render('admin/registration.html.twig',  [
-                'form' => $formUser->createView()
-            ]);
-        }
-        
+        $repo = $om->getRepository(User::class);
+        $users=$repo->findAll();
+        return $this->render('admin/users.html.twig',[
+            'registered' => $users]);
     }
+    
+    /**
+    * @Route("/user/delete/{id}", name="user-delete")
+    */
+    public function Deluser($id, Request $request, ObjectManager $om)
+    {
+        $repo = $om->getRepository(User::class);
+        $om->remove($repo->find($id));
+        return $this->redirectToRoute('users');
+    }
+    
+    
+/**
+ * @Route("/user/new", name="user-new")
+ * @Route("/user/{id}", name="user-edit")
+ */
+        
+    public function User(User $user=null, Request $request, ObjectManager $om,UserPasswordEncoderInterface $encoder)
+        {
+            // create a new actor entity
+            if (!$user) {
+                $user= new User();
+                
+            }
+            //  create FormBuilder from form factory service
+            $formUser = $this->createForm(UserType::class, $user);
+            $formUser->handleRequest($request);
+            
+            if ($formUser->isSubmitted() && $formUser->isValid()) {
+                
+                $pwd=$encoder->encodePassword($user,$user->getPassword());
+                $user->setPassword($pwd);
+                $om->persist($user);
+                $om->flush();
+                
+                return $this->redirectToRoute('login');
+                
+            }else {
+                return $this->render('admin/registration.html.twig',  [
+                    'form' => $formUser->createView()
+                ]);
+            }
+            
+        }
     
     /**
      *
@@ -82,6 +105,33 @@ class AdminController extends AbstractController
         
     }
     
+
+/**
+* ***************
+* CATEGORY MANAGEMENT
+* ***************
+ */
+    /**
+     *
+     * @Route ("/admin/category/{id}",name="category-update")
+     * @Route ("/admin/catégory/new", name="category-new")
+     */
+    public function Cat (){
+        
+        
+        return $this->render ('admin/login.html.twig');
+    }
     
+    
+    /**
+     *
+     * @Route ("/delete/catégory/{id}", name="category-update")
+     */
+    public function del (){
+        
+        
+        return $this->render ('admin/login.html.twig');
+    }
+
     
 }

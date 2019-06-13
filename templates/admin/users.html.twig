@@ -9,12 +9,28 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello{{ app.user }} ✅</h1>
+    <h1>Hello {{ app.user.email }} ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/media/ssd500Go/Documents/TP/P6APF/src/Controller/SecurityController.php'|file_link(0) }}">src/Controller/SecurityController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/media/ssd500Go/Documents/TP/P6APF/templates/security/index.html.twig'|file_link(0) }}">templates/security/index.html.twig</a></code></li>
-    </ul>
-</div>
+    Liste des utilisateurs:
+    <table class="table table-hover"  style="max-width:395px">
+  <thead>
+    <tr>
+      <th scope="col">Email</th>
+      <th scope="col">Roles</th>
+      <th scope="col">Password</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for reg in registered %}
+    <tr class="table-default">
+    		<td><a href="{{ path('user-edit',{'id' : reg.id}) }}">{{ reg.email }}</a></td>
+    		<td><a href="{{ path('user-edit',{'id' : reg.id}) }}">        {% for role in reg.roles %}
+			{{ role }} {% endfor %}</a></td>
+    		<td><a href="{{ path('user-edit',{'id' : reg.id}) }}">{{ reg.password }}</a></td>
+        	<td><a href="{{ path('user-delete',{'id' : reg.id}) }}">Supprimer</a></td>
+    	{% endfor%}
+      
+    </tr>
+  </tbody>
+</table> 
 {% endblock %}
