@@ -47,8 +47,14 @@ class AdminController extends AbstractController
     */
     public function Deluser($id, Request $request, ObjectManager $om)
     {
+     
         $repo = $om->getRepository(User::class);
         $om->remove($repo->find($id));
+        $om->flush();
+        $this->addFlash(
+            'alert-warning',
+            'l\'utilisateur a été supprimé !'
+            );
         return $this->redirectToRoute('users');
     }
     
@@ -75,8 +81,11 @@ class AdminController extends AbstractController
                 $user->setPassword($pwd);
                 $om->persist($user);
                 $om->flush();
-                
-                return $this->redirectToRoute('login');
+                $this->addFlash(
+                    'alert-success',
+                    'l\'utilisateur a été crée !!'
+                    );
+                return $this->redirectToRoute('users');
                 
             }else {
                 return $this->render('admin/registration.html.twig',  [
