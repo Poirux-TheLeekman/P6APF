@@ -41,10 +41,15 @@ class AdminController extends AbstractController
      */
     public function DelCategory(Category $category,Request $request, ObjectManager $om,FileSystem $filesystem)
     {
-        $file = $category->getIcon();
-        $filesystem->remove('uploads/icons/'.$file);
+        $file = $category->getIconName();
+        $path='uploads/icons/'.$file;
+        $filesystem->remove($path);
         $om->remove($category);
         $om->flush();
+        $this->addFlash(
+            'alert-warning',
+            'la catégorie a été supprimée !'
+            );
         return $this->redirectToRoute('categories');
     }
     
@@ -93,7 +98,10 @@ class AdminController extends AbstractController
             // updates the 'brochure' property to store the PDF file name
             // instead of its contents
             // ... persist the $product variable or any other work
-            
+            $this->addFlash(
+                'alert-success',
+                'Catégorie enregistrée !'
+                );
             return $this->RedirectToRoute('categories');
         }
         
