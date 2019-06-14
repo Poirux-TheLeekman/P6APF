@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}Administration-Category{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif;   }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="example-wrapper">
+    <h1>Liste des catégories</h1>
+	<p>Cliquez sur une catégorie pour la modifier</p>
+	<div class="container" style="display: flex;">
+  	    {% for category in allcategory %}
+    	<div class="card-link" >
+        	<a href="{{ path('category-update',{'id' : category.id}) }}">
+            	<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+              		<div class="card-title"><h4>{{ category.name }}</h4></div>
+                 	 	<div class="card-body">
+                    	<p class="card-text">{{ category.description }}</p>
+                    	<p class="card-text">Icone de la catégorie :</p>
+                    	<p><img style=" max-width: 80%; display: block; max-height: 200px" src="{{ asset('uploads/icons/' ~ category.IconName) }}" alt="{{ category.IconName }}"></p>
+                  		</div>
+            	</div>
+        	</a>
+       	<a href="{{ path('category-delete',{'id' : category.id}) }}">Supprimer</a>
+        </div>
+    	{% endfor%}
+    </div>	
+</div>
+{% endblock %}

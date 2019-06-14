@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block title %}Administration-Category{% endblock %}
+{% block body %}
+<div class="example-wrapper">
+    <h1>Entrer une nouvelle catégory</h1>
+ 
+    Remplissez le formulaire suivant pour créer une nouvelle catégory:
+    	{{ form_start(form) }}
+    	<div class="form-group">
+    		<label for="">Nom de la Catégorie</label>
+    		    	{{ form_widget(form.name) }}	
+    	</div>
+    	<div class="form-group">
+    		<label for="">Description de la Catégorie</label>
+    		    	{{ form_widget(form.description) }}
+    	</div>
+    	<div>
+        <img style=" max-width: 80%; display: block; max-height: 200px" src="{{ asset('uploads/icons/' ~  icon) }}" alt="{{icon }}">               
+        </div>
+    	<div class="form-group file-field">
+       		    	{{ form_widget(form.icon) }}
+   		</div>
+                      
+    	<button class="btn btn-success">ajouter</button>
+    	
+    	
+    	
+    	
+    	
+    	{{ form_end(form) }}    
+</div>
+        {% block javascripts %}
+       
+        {% endblock %}
+{% endblock %}

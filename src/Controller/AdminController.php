@@ -7,22 +7,116 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Category;
+use App\Form\CategoryType;
+
+
 
 class AdminController extends AbstractController
 {
+
+    
+/**
+* ***************
+* CATEGORY MANAGEMENT
+* ***************
+*/
     /**
-     * @Route("/admin", name="admin")
+     *
+     * @Route ("/admin", name="admin")
      */
-    public function index()
+    public function home (){
+        
+        
+        return $this->render ('admin/index.html.twig');
+    }
+    /**
+     * @Route("admin/category/delete/{id}", name="category-delete")
+     
+     */
+    public function DelCategory(Category $category,Request $request, ObjectManager $om,FileSystem $filesystem)
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+        $file = $category->getIcon();
+        $filesystem->remove('uploads/icons/'.$file);
+        $om->remove($category);
+        $om->flush();
+        return $this->redirectToRoute('categories');
+    }
+    
+    
+    
+    
+    /**
+     * @Route("admin/category/new", name="category-new")
+     * @Route("admin/category/{id}", name="category-update")
+     
+     */
+    public function Category($id=null,Category $category=null,Request $request, ObjectManager $om)
+    {
+        if  (!$category) {
+            // create a new actor entity
+            $category= new Category();
+            $category->setIconName('unknown.png');
+        }else {
+            $repo=$om->getRepository(Category::class);
+            $category=$repo->find($id);
+        }
+        dump( $category->getIconName());
+        
+        $icon=$category->getIconName();
+        
+        //  create FormBuilder from form factory service
+        $formCategory = $this->createForm(CategoryType::class, $category);
+        $formCategory->handleRequest($request);
+        
+        if ($formCategory->isSubmitted() && $formCategory->isValid()) {
+            // $file stores the uploaded PDF file
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $category->getIcon();
+            $fileName = $file->getClientOriginalName();   // Move the file to the directory where brochures are stored
+            try {
+                $file->move(
+                    $this->getParameter('icons_directory'),$fileName
+                    );
+                $category->setIconName($fileName) ;
+                $om->persist($category);
+                $om->flush();
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+            
+            // updates the 'brochure' property to store the PDF file name
+            // instead of its contents
+            // ... persist the $product variable or any other work
+            
+            return $this->RedirectToRoute('categories');
+        }
+        
+        
+        
+        return $this->render('admin/category-create.html.twig',  [
+            'form' => $formCategory->createView(),
+            'icon' =>$icon
         ]);
     }
+    /**
+     * @Route("admin/categories", name="categories")
+     */
+    public function AllCategory(Request $request, ObjectManager $om)
+    {
+        $repo=$this->getDoctrine()->getRepository(Category::class);
+        $allcategory=$repo->findAll();
+        return $this->render('front/allcategory.html.twig', [ 'allcategory'=> $allcategory
+        ]);
+        
+        
+    }
+    
     
     
 /**
@@ -115,32 +209,6 @@ class AdminController extends AbstractController
     }
     
 
-/**
-* ***************
-* CATEGORY MANAGEMENT
-* ***************
- */
-    /**
-     *
-     * @Route ("/admin/category/{id}",name="category-update")
-     * @Route ("/admin/catégory/new", name="category-new")
-     */
-    public function Cat (){
-        
-        
-        return $this->render ('admin/login.html.twig');
-    }
-    
-    
-    /**
-     *
-     * @Route ("/delete/catégory/{id}", name="category-update")
-     */
-    public function del (){
-        
-        
-        return $this->render ('admin/login.html.twig');
-    }
 
     
 }
