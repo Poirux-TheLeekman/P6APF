@@ -39,6 +39,7 @@ security:
     access_control:
          - { path: ^/admin/users, roles: ROLE_ADMIN }
          - { path: ^/admin/category, roles: ROLE_ADMIN }
+         
          - { path: ^admin/delete, roles: ROLE_ADMIN }
          - { path: ^/admin, roles: ROLE_USER }
          

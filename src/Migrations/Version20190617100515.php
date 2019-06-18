@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190614101429 extends AbstractMigration
+final class Version20190617100515 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,14 +22,16 @@ final class Version20190614101429 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('CREATE TABLE entry (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, phone INT DEFAULT NULL, mail VARCHAR(255) NOT NULL, fax INT DEFAULT NULL, website VARCHAR(255) DEFAULT NULL, logo VARCHAR(255) DEFAULT NULL, publish TINYINT(1) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE entry_category (entry_id INT NOT NULL, category_id INT NOT NULL, INDEX IDX_680BF989BA364942 (entry_id), INDEX IDX_680BF98912469DE2 (category_id), PRIMARY KEY(entry_id, category_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE category (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, icon_name VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE category_entry (category_id INT NOT NULL, entry_id INT NOT NULL, INDEX IDX_C312D23912469DE2 (category_id), INDEX IDX_C312D239BA364942 (entry_id), PRIMARY KEY(category_id, entry_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE entry_category ADD CONSTRAINT FK_680BF989BA364942 FOREIGN KEY (entry_id) REFERENCES entry (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE entry_category ADD CONSTRAINT FK_680BF98912469DE2 FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE category_entry ADD CONSTRAINT FK_C312D23912469DE2 FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE category_entry ADD CONSTRAINT FK_C312D239BA364942 FOREIGN KEY (entry_id) REFERENCES entry (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE entry ADD description LONGTEXT DEFAULT NULL, ADD phone INT DEFAULT NULL, ADD mail VARCHAR(255) NOT NULL, ADD fax INT DEFAULT NULL, ADD website VARCHAR(255) DEFAULT NULL, ADD logo VARCHAR(255) DEFAULT NULL, ADD publish TINYINT(1) DEFAULT NULL');
-        $this->addSql('ALTER TABLE category ADD description LONGTEXT DEFAULT NULL, ADD icon_name VARCHAR(255) DEFAULT NULL');
+        $this->addSql('DROP TABLE user2');
     }
 
     public function down(Schema $schema) : void
@@ -37,9 +39,15 @@ final class Version20190614101429 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
+        $this->addSql('ALTER TABLE entry_category DROP FOREIGN KEY FK_680BF989BA364942');
+        $this->addSql('ALTER TABLE category_entry DROP FOREIGN KEY FK_C312D239BA364942');
+        $this->addSql('ALTER TABLE entry_category DROP FOREIGN KEY FK_680BF98912469DE2');
+        $this->addSql('ALTER TABLE category_entry DROP FOREIGN KEY FK_C312D23912469DE2');
+        $this->addSql('CREATE TABLE user2 (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL COLLATE utf8mb4_unicode_ci, roles JSON NOT NULL, password VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, UNIQUE INDEX UNIQ_8D93D649E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('DROP TABLE entry');
         $this->addSql('DROP TABLE entry_category');
+        $this->addSql('DROP TABLE user');
+        $this->addSql('DROP TABLE category');
         $this->addSql('DROP TABLE category_entry');
-        $this->addSql('ALTER TABLE category DROP description, DROP icon_name');
-        $this->addSql('ALTER TABLE entry DROP description, DROP phone, DROP mail, DROP fax, DROP website, DROP logo, DROP publish');
     }
 }

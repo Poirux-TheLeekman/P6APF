@@ -5,6 +5,23 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
             <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">		
 			<link rel="stylesheet" href="/css/apf-custom-style.css">
+			<style>
+			.modal-content{
+			    background-color:#87999A;
+			
+			
+			}
+    .modal-header {
+    			    background-color:#DDE4E6;
+    
+width:100%;
+margin:auto;
+       }
+.modal-header .close
+{
+margin:-1rem -1rem -1rem -1rem;}
+       
+</style>
         
         {% block stylesheets %}{% endblock %}
     </head>
@@ -19,17 +36,18 @@
                 <ul class="navbar-nav mr-auto">
                 
                   <li class="nav-item">
-                    <a class="nav-link" href="{{ path('front') }}">Liste des Acteurs</a>
+                    <a class="nav-link" href="{{ path('actors') }}">Liste des Acteurs</a>
                   </li>
                   <li class="nav-item">
                    {% if not app.user %} 
-                  <a class="nav-link" href="{{ path ('front') }}">Sousmettre un Acteur</a>
+                  <a class="nav-link" href="{{ path ('actor-new') }}">Sousmettre un Acteur</a>
                    {% else %}
-                   <a class="nav-link" href="{{ path ('front') }}">Ajouter un acteur</a>{% endif %}
+                   <a class="nav-link" href="{{ path ('actor-new') }}">Ajouter un acteur</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{{ path ('categories') }}">Catégories</a>
                   </li>
+                  {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}                  
                     <li class="nav-item">
                     <a class="nav-link" href="{{ path ('category-new') }}">Nouvelle catégory</a>
@@ -68,10 +86,30 @@
     {% endfor %}
 {% endfor %}
       	{% block body %}
+
+      	
         {% endblock %}
+ 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript">
+$(function() {
+	$('a[data-confirm]').click(function(ev) {
+		var href = $(this).attr('href');
+		
+		if (!$('#dataConfirmModal').length) {
+			$('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Merci de confirmer</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Non</button><a class="btn btn-danger" id="dataConfirmOK">Oui</a></div></div></div></div>');
+		}
+		$('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+		$('#dataConfirmOK').attr('href', href);
+		$('#dataConfirmModal').modal({show:true});
+		
+		return false;
+	});
+});
+
+</script> 
         {% block javascripts %}
         
         {% endblock %}

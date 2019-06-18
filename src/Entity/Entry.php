@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use App\Entity\Category;
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ActorRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EntryRepository")
  */
 class Entry
 {
@@ -62,7 +62,7 @@ class Entry
     private $publish;
     
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category",  inversedBy="actors", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="actors")
      */
     private $categories;
     

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block title %}Administration-Actors{% endblock %}
+{% block stylesheets %}
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+{% endblock %}
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif;   }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="example-wrapper">
+    <h1>Liste des acteurs</h1>
+	<p>Cliquez sur un acteur pour le modifier</p>
+	<div class="container" style="display: flex">
+  	    {% for actor in actors %}
+  	    <div class="card text-white bg-secondary mb-3" style="margin:5px;">
+        	<a href="{{ path('actor-view' ,{'id' : actor.id }) }}">
+        	
+        	<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+          		<div class="card-title"><h4>{{ actor.name }}</h4></div>
+             	 	<div class="card-body">
+                	<p class="card-text">{{ actor.description }}</p>
+                	                	<p class="card-text">{{ actor.mail }}</p>                	
+                	                	<p class="card-text">{{ actor.website }}</p>
+					<p class="card-text"><img src="{{ actor.logo }}"></p>
+                	<p class="card-text">catégorie(s) :</p>
+                	<p class="card-text">
+                	{% if not actor.categories.empty %}
+                      <p>
+                        {% for category in actor.categories %}
+                          {{ category.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                      </p>
+                    {% endif %}
+                	</p>
+                	
+              		</div>
+        	</div>
+        	</a>
+          {% if app.user %}
+			<div>
+			<a href="{{ path('actor-update' ,{'id' : actor.id }) }}"><button class="btn btn-warning"><i class='fas fa-edit'></i></button></a>
+			<a data-confirm="Etes-vous certain de vouloir supprimer l'acteur {{ actor.id }} ?" href="{{ path('actor-delete' ,{'id' : actor.id }) }}"><button class="btn btn-danger"><i class='fas fa-trash'></i></button></a>
+           </div>
+        	{% endif %}
+        	    	  </div>
+    	  {% endfor%}
+    </div>	
+</div>
+{% endblock %}

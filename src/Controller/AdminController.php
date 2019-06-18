@@ -8,19 +8,53 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 use App\Entity\User;
 use App\Form\UserType;
 use App\Entity\Category;
 use App\Form\CategoryType;
+use App\Entity\Entry;
 
+
+/**
+ +  * Require ROLE_USER for *every* controller method in this class.
+ +  *
+ +  * @IsGranted("ROLE_USER")
+ +  */
 
 
 class AdminController extends AbstractController
 {
 
+/**
+* ***************
+* Actor MANAGEMENT
+* ***************
+*/
+    /**
+     * @Route("/admin/actor/delete/{id}", name="actor-delete")
+     
+     */
+    public function DelActor(Entry $entry,Request $request, ObjectManager $om)
+    {
+        $om->remove($entry);
+        $om->flush();
+        $this->addFlash(
+            'alert-warning',
+            'l\'acteur a été supprimé !'
+            );
+        return $this->redirectToRoute('actors');
+    }
     
+    
+    
+    
+    
+    
+     
+     
 /**
 * ***************
 * CATEGORY MANAGEMENT
@@ -197,15 +231,7 @@ class AdminController extends AbstractController
             
         }
     
-    /**
-     *
-     * @Route ("/login", name="login")
-     */
-    public function Login (){
-        
-        
-        return $this->render ('admin/login.html.twig');
-    }
+
     
     /**
      *

@@ -8,11 +8,13 @@
 </style>
 <div class="example-wrapper">
     <h1>Liste des catégories</h1>
-	<p>Cliquez sur une catégorie pour la modifier</p>
 	<div class="container" style="display: flex;">
   	    {% for category in allcategory %}
     	<div class="card-link" >
+    	           {% if is_granted('ROLE_ADMIN') %}
         	<a href="{{ path('category-update',{'id' : category.id}) }}">
+        	        	{% endif %}
+        	
             	<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
               		<div class="card-title"><h4>{{ category.name }}</h4></div>
                  	 	<div class="card-body">
@@ -21,8 +23,11 @@
                     	<p><img style=" max-width: 80%; display: block; max-height: 200px" src="{{ asset('uploads/icons/' ~ category.IconName) }}" alt="{{ category.IconName }}"></p>
                   		</div>
             	</div>
+            	           {% if is_granted('ROLE_ADMIN') %}
+            	
         	</a>
-       	<a href="{{ path('category-delete',{'id' : category.id}) }}">Supprimer</a>
+        		<a data-confirm="Etes-vous certain de vouloir supprimer la catégorie {{ category.id }}?" href="{{ path('category-delete',{'id' : category.id}) }}">Supprimer</a>
+        	{% endif %}
         </div>
     	{% endfor%}
     </div>	

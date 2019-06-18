@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
-class EntryType extends AbstractType
+class UserEntryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,7 +33,7 @@ class EntryType extends AbstractType
         ->add('fax')
         ->add('website',UrlType::class)
         ->add('logo',UrlType::class)
-        ->add('publish',HiddenType::class,['data'=>0])
+        ->add('publish')
         ->add('categories',EntityType::class,[
             'class'=>Category::class,
             'choice_label'=>'name',
