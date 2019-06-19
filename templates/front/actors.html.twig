@@ -10,7 +10,7 @@
 </style>
 <div class="example-wrapper">
     <h1>Liste des acteurs</h1>
-	<p>Cliquez sur un acteur pour le modifier</p>
+    {% if app.user %}<p>Cliquez sur un acteur pour le modifier</p>{% else %}<p>Cliquez sur un acteur pour voir les détails</p>{% endif %}
 	<div class="container" style="display: flex">
   	    {% for actor in actors %}
   	    <div class="card text-white bg-secondary mb-3" style="margin:5px;">
