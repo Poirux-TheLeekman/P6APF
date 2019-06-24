@@ -65,6 +65,11 @@ class Entry
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="actors")
      */
     private $categories;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $location = [];
     
     
     
@@ -205,6 +210,18 @@ class Entry
     }
     public function updatecategories($category) {
         $this->categories[]=$category ;
+    }
+
+    public function getLocation(): ?array
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?array $location): self
+    {
+        $this->location = $location;
+
+        return $this;
     }
     
     
