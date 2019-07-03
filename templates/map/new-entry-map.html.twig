@@ -1,0 +1,109 @@
+
+
+
+<br />
+
+ <div id="map" style="height: 600px; width:100%"></div>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script src="{{ asset('js/map.js') }}"></script>
+  <script>
+
+  // map center on Bourg en Bresse
+  var startlat = 46.20;
+  var startlon = 5.21;
+  var zoom= 10.25;
+  var options = {
+   center: [startlat, startlon],
+   zoom: 10.25
+  }
+  // custome icon for new actor
+  var myIcon = L.icon({
+	    iconUrl: '../uploads/icons/marker_icon.png',
+	    iconSize:     [52, 63], // size of the icon
+	    shadowSize:   [64, 45], // size of the shadow
+	    iconAnchor:   [26, 63], // point of the icon which will correspond to marker's location
+	    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+	});
+  
+  var map = L.map('map').setView([startlat, startlon], zoom);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+
+
+  document.getElementById('entry_lat').value = startlat;
+  document.getElementById('entry_lng').value = startlon;
+
+  var nzoom = 12;
+
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: 'OSM'}).addTo(map);
+
+  var myMarker = L.marker([startlat, startlon], {title: "Nouvel acteur", alt: "Nouvel acteur",icon:myIcon, draggable: true}).addTo(map).on('dragend', function() {
+   var lat = myMarker.getLatLng().lat.toFixed(8);
+   var lon = myMarker.getLatLng().lng.toFixed(8);
+   var czoom = map.getZoom();
+   if(czoom < 18) { nzoom = czoom + 2; }
+   if(nzoom > 18) { nzoom = 18; }
+   if(czoom != 18) { map.setView([lat,lon], nzoom); } else { map.setView([lat,lon]); }
+   document.getElementById('entry_lat').value = lat;
+   document.getElementById('entry_lng').value = lon;
+   myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
+  });
+
+  function chooseAddr(lat1, lng1)
+  {
+   myMarker.closePopup();
+   map.setView([lat1, lng1],18);
+   myMarker.setLatLng([lat1, lng1]);
+   lat = lat1.toFixed(8);
+   lon = lng1.toFixed(8);
+   document.getElementById('entry_lat').value = lat;
+   document.getElementById('entry_lng').value = lon;
+   myMarker.bindPopup("Lat " + lat + "<br />Lon " + lon).openPopup();
+  }
+
+  function myFunction(arr)
+  {
+   var out = "<br />";
+   var i;
+
+   if(arr.length > 0)
+   {
+    for(i = 0; i < arr.length; i++)
+    {
+     out += "<b> Cliquer sur la bonne adresse pour placer le marqueur sur la carte </b><div class='address' title='Show Location and Coordinates' onclick='chooseAddr(" + arr[i].lat + ", " + arr[i].lon + ");return false;'>" + arr[i].display_name + "</div>";
+    }
+    document.getElementById('results').innerHTML = out;
+    document.getElementById('infomap').innerHTML = "Vous pouvez déplacer le marqueur sur la carte pour ajuster son positionnement si nécessaire";
+    
+   }
+   else
+   {
+    document.getElementById('results').innerHTML = "Désolé, aucune correspondance trouvée pour cette adresse... ";
+    document.getElementById('infomap').innerHTML = "Veuillez déplacer le marqueur sur la carte pour attribuer un lieu à cet acteur";
+	
+    }
+
+  }
+
+  function addr_search()
+  {
+   var inp = document.getElementById("entry_address");
+   var xmlhttp = new XMLHttpRequest();
+   var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + inp.value;
+   xmlhttp.onreadystatechange = function()
+   {
+     if (this.readyState == 4 && this.status == 200)
+     {
+      var myArr = JSON.parse(this.responseText);
+      myFunction(myArr);
+     }
+   };
+   xmlhttp.open("GET", url, true);
+   xmlhttp.send();
+  }
+    
+
+  </script>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1a8fb11cbe40166d2a8fe8f79804a51",
+    "content-hash": "c8ed0b0e0dc234ec39a2d717a3b4110a",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1905,6 +1905,52 @@
                 "psr-3"
             ],
             "time": "2018-11-20T15:27:04+00:00"
+        },
+        {
+            "name": "rogeriolino/doctrine-geojson",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rogeriolino/doctrine-geojson.git",
+                "reference": "4bb6921c5a3fe3c26ece7c9e766f64b3d1703b1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rogeriolino/doctrine-geojson/zipball/4bb6921c5a3fe3c26ece7c9e766f64b3d1703b1d",
+                "reference": "4bb6921c5a3fe3c26ece7c9e766f64b3d1703b1d",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/orm": "2.*",
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "RogerioLino\\Doctrine\\GeoJson\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rogério Alencar Lino Filho",
+                    "email": "rogeriolino@gmail.com",
+                    "homepage": "http://rogeriolino.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "GeoJson Doctrine Models",
+            "homepage": "http://www.rogeriolino.com",
+            "keywords": [
+                "doctrine",
+                "geojson",
+                "gis",
+                "json"
+            ],
+            "time": "2014-05-16T14:29:54+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -6920,7 +6966,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "rogeriolino/doctrine-geojson": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

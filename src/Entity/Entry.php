@@ -67,10 +67,20 @@ class Entry
     private $categories;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
-    private $location = [];
-    
+    private $lat;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $lng;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $address;
+
     
     
     public function __construct()
@@ -212,17 +222,41 @@ class Entry
         $this->categories[]=$category ;
     }
 
-    public function getLocation(): ?array
+    public function getLat(): ?float
     {
-        return $this->location;
+        return $this->lat;
     }
 
-    public function setLocation(?array $location): self
+    public function setLat(?float $lat): self
     {
-        $this->location = $location;
+        $this->lat = $lat;
 
         return $this;
     }
+
+    public function getLng(): ?float
+    {
+        return $this->lng;
+    }
+
+    public function setLng(?float $lng): self
+    {
+        $this->lng = $lng;
+
+        return $this;
+    }
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+    
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+        
+        return $this;
+    }
+  
     
     
 }

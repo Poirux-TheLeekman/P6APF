@@ -24,6 +24,13 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('apf', './assets/js/apf.js')
+    .addEntry('vendor', './assets/js/vendor.js')
+    .addEntry('marker-create', './assets/js/map-marker-create.js')
+    .addEntry('entry-marker', './assets/js/map-entry-marker.js')
+
+
+
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -71,4 +78,7 @@ Encore
     //.addEntry('admin', './assets/js/admin.js')
 ;
 
-module.exports = Encore.getWebpackConfig();
+var config = Encore.getWebpackConfig();
+config.externals.jquery = 'jQuery';
+
+module.exports =config;

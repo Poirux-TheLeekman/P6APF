@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Doctrine\Common\Persistence\ObjectManager;
 
+
 use App\Entity\Entry;
 use App\Form\EntryType;
 use App\Form\UserEntryType;
@@ -20,7 +21,7 @@ use App\Form\CategoryType;
 class FrontController extends AbstractController
 {
     /**
-     * @Route("/front", name="front")
+     * @Route("/", name="front")
      */
     public function index()
     {
@@ -87,6 +88,7 @@ class FrontController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
+          
             $om->persist($entry);
             $om->flush();
             $this->addFlash(

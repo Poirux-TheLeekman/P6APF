@@ -3,6 +3,7 @@
 {% block title %}Administration-Actor{% endblock %}
 
 {% block body %}
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
@@ -23,7 +24,44 @@ a<div class="example-wrapper">
         {{ form_row(formActor.website) }}
         {{ form_row(formActor.logo) }}
         {{ form_row(formActor.categories) }}
-                {{ form_row(formActor.publish) }}
+          <div id="map" style="height: 400px; width:600px"></div>
+            
+            <script>
+                var map = L.map('map').setView([46.1202996, 5.2091508], 10.2);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: ' <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+
+          
+         		
+
+                function onMapClick(e) {
+                 	 marker = new L.marker(e.latlng, {draggable:'true'});
+                	  marker.on('dragend', function(event){
+                	    var marker = event.target;
+                	    var position = marker.getLatLng();
+                	    marker.setLatLng(new L.LatLng(position.lat, position.lng),{draggable:'true'});
+                	    map.panTo(new L.LatLng(position.lat, position.lng));
+                	    var arraypos= '['+ position.lat   +','+ position.lng+']'
+                	    $('#entry_location').val(arraypos);
+                	    
+                	  });
+                	  
+              	  	map.addLayer(marker);
+                	  
+                	};
+
+                	map.on('click', onMapClick);
+
+
+
+
+                
+            </script>
+        {{ form_row(formActor.publish) }}
         
         {% if is_granted('ROLE_USER') %}
          <button class="btn btn-success">ajouter</button>
