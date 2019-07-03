@@ -8,9 +8,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 use App\Entity\Category;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EntryRepository")
+ * @UniqueEntity("name")
  */
 class Entry
 {
@@ -23,6 +28,7 @@ class Entry
     
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $name;
     

@@ -12,7 +12,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use App\Entity\Entry;
 use App\Form\EntryType;
-use App\Form\UserEntryType;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
@@ -53,7 +52,14 @@ class FrontController extends AbstractController
     public function Entrieslist()
     {
         $repo=$this->getDoctrine()->getRepository(Entry::class);
+        $user = $this->getUser();
+        if (null !== $user) {
         $actors=$repo->findAll();
+        }
+        else {
+        $actors=$repo->findBy(['publish'=>'1']);
+            
+        }
         return $this->render('front/actors.html.twig', [
             'actors' => $actors
         ]);
@@ -75,11 +81,9 @@ class FrontController extends AbstractController
         }
         
         $user = $this->getUser();
-        
-        if (null === $user) {
-            $form = $this->createForm(EntryType::class, $entry);
-        } else {
-            $form = $this->createForm(UserEntryType::class, $entry);
+        $form = $this->createForm(EntryType::class, $entry);
+        if (null !== $user) {
+            $form->add('publish');
         }
       
         //  create FormBuilder from form factory service
@@ -98,13 +102,8 @@ class FrontController extends AbstractController
             return $this->redirectToRoute('actors');
             
         }else {
-            if (null === $user) {
-                
-            return $this->render('front/actor-create.html.twig',  [
-                'formActor' => $form->createView()]);
-            }
-            else 
-               return $this->render('admin/actor-create.html.twig',  [
+         
+               return $this->render('front/actor-create.html.twig',  [
                     'formActor' => $form->createView()
             ]);
         }

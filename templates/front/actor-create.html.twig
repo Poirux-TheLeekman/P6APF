@@ -50,6 +50,8 @@ html, body { width:100%;padding:0;margin:0; }
         {{ form_row(formActor.categories) }}
 		
         {% if is_granted('ROLE_USER') %}
+        {{ form_row(formActor.publish) }}
+        
          <button class="btn btn-success">ajouter</button>
     	{% else %}
 		<button class="btn btn-success">soumettre</button>
