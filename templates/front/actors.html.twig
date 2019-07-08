@@ -3,7 +3,12 @@
 {% block stylesheets %}
 <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
-
+<style>
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+	background:#2C3E50 !important;
+	color: white;
+}
+</style>
 {% endblock %}
 {% block body %}
 
@@ -13,7 +18,7 @@
 	<div class="actors-container">
 			<div class="list">
 			{% for actor in actors %}
-			<div class="item js-marker" data-lat="{{ actor.lat }}" data-lng="{{ actor.lng }}"  data-name="{{ actor.name }}">
+			<div class="item js-marker" data-lat="{{ actor.lat }}" data-lng="{{ actor.lng }}"  data-name="{{ actor.name }}" data-logo="{{ actor.logo }}">
 			<a href="{{ path('actor-view' ,{'id' : actor.id }) }}">
           	
 				<h4>{{ actor.name }} <img class="thumbnails" src="{{ actor.logo }}"></h4>

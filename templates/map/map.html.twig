@@ -2,12 +2,44 @@
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
   <script src="{{ asset('js/map.js') }}"></script>
   <script>
- 
-  var map = L.map('map').setView([46.20, 5.21], 10.25);
+  var bounds=[[46.2, 5.2]];
+  var map = L.map('map');
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
+
   
+  Array.from(document.querySelectorAll('.js-marker')).forEach((item) => {
+
+	L.popup({
+     autoClose:false,
+     closeOnEscapeKet: false,
+     closeOnClick:false,
+     closeButton:false,
+     className:'entry-marker',
+     maxWidth:300
+		
+	}).setLatLng([item.dataset.lat, item.dataset.lng])
+	  .setContent('<img class="thumbnail-logo" src="'+item.dataset.logo+'">' + item.dataset.name)
+	  .openOn(map)
+	  
+	  var point=[item.dataset.lat, item.dataset.lng];
+	  bounds.push(point);
+	  console.log(point);
+	  console.log(bounds);
+	 item.addEventListener('mouseover', function() {
+
+		 })
+		 
+	  });
+
+
+
+
+		
+ 	map.fitBounds(bounds);
+
+	  
 
   </script>
