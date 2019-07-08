@@ -23,6 +23,5 @@ $(function() {
 		
 		return false;
 	});
-	console.log('apf-custom-style');
 
 });
