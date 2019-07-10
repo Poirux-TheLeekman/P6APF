@@ -68,7 +68,7 @@ class Entry
     private $publish;
     
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="actors")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="actors")
      */
     private $categories;
 

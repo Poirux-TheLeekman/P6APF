@@ -17,7 +17,7 @@
                 	                	<p class="card-text">{{ actor.website }}</p>
                 	<p class="card-text">catégorie(s) :</p>
 						<p class="card-text">
-						                	{% if not actor.categories.empty %}
+					   {% if not actor.categories.empty %}
                       <ul>
                         {% for category in actor.categories %}
                         <li>  {{ category.name }}</li>

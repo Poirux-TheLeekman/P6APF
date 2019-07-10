@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}Hello FrontController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 {% block stylesheets %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
 {% endblock %}
@@ -15,6 +15,12 @@
  
 </div>
 {% block javascripts %}
-{{ encore_entry_script_tags('entry-marker') }}
+
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"
+			  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+			  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>		
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>	  
+   		   		{{ encore_entry_script_tags('entry-marker')}} 
 {% endblock %}
 {% endblock %}

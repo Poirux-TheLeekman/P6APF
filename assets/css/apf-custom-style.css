@@ -2,16 +2,16 @@ body {
  	padding: 0; margin: 0;
  	background-color: white; }
 
-html, body,  { 
-height: 100%; width: 100%; 
+html, body  { 
+height: 100%; 
+width: 100%; 
 }
 .example-wrapper { 
-margin: 1em auto; max-width: 1000px; width: 90%; font: 18px/1.5 sans-serif; 
+margin: 1em auto; width:90%; font: 18px/1.5 sans-serif; 
 }
 .example-wrapper code { 
 background: #F5F5F5; padding: 2px 6px;
-}
-    
+}   
 .modal-content{
 background-color:#87999A;
 						
@@ -47,16 +47,21 @@ margin:-1rem -1rem -1rem -1rem;
 		
 		display:grid;
 		grid-template-columns: repeat(2,1fr);
-		grid-column-gap:15px;
-		grid-row-gap:15px;
-		padding: 0 15px;
+		grid-column-gap:10px;
+		grid-row-gap:10px;
+		padding: 0 10px;
 		
 		
 	}
 } 
 .item {
-	background-color : grey ;
+	background-color : LightGrey ;
 	padding: 0 10px;
+	overflow-wrap: break-word;
+	
+}
+.item > a{
+	color:#2C3E50
 }
 
 
@@ -73,6 +78,24 @@ margin:-1rem -1rem -1rem -1rem;
 	padding:5px;
 }
 
+.admin-control {
+	float: left;
+	margin-bottom:3px;
+	margin-left:3px;
+	
+}
+.icon{
+	max-width: 80%;
+	 display: block;
+	  max-height: 200px
+}
+.icon-thumbnails{
+	max-width: 15%;
+	 display: inline;
+	  max-height: 60px
+}
+
+/* leaflet marker css*/
 
 .entry-marker.leaflet-popup{
 	margin-bottom: 16px;
@@ -82,7 +105,7 @@ margin:-1rem -1rem -1rem -1rem;
 	padding: 5px 10px;
 	text-align: center;
 	box-shadow: 0 0 10px rgba(0,0,0,0.3);
-	background-color:#fff;
+	background-color:#DCDCDC;
 }
 
 .entry-marker.leaflet-popup::after{
@@ -95,7 +118,7 @@ margin:-1rem -1rem -1rem -1rem;
 	margin-left:-8px;
 	border-left: 8px solid transparent;
 	border-right: 8px solid transparent;
-	border-top: 8px solid #fff;
+	border-top: 8px solid #DCDCDC;
 	
 }
 
@@ -121,7 +144,7 @@ margin:-1rem -1rem -1rem -1rem;
 .entry-marker.active, .entry-marker:hover {
 	z-index:300;
 	background-color: #2C3E50 !important;
-	color: #fff;
+	color:  	#FFF;
 }
 
 
@@ -130,6 +153,6 @@ margin:-1rem -1rem -1rem -1rem;
 }
 .entry-marker.expended {
 	z-index:301;
-	background-color: #fff !important;
+	background-color: #DCDCDC!important;
 	color: inherit!important;
 }

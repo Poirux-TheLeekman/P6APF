@@ -20,7 +20,7 @@
                  	 	<div class="card-body">
                     	<p class="card-text">{{ category.description }}</p>
                     	<p class="card-text">Icone de la catégorie :</p>
-                    	<p><img style=" max-width: 80%; display: block; max-height: 200px" src="{{ asset('uploads/icons/' ~ category.IconName) }}" alt="{{ category.IconName }}"></p>
+                    	<p><img class="icon" src="{{ asset('uploads/icons/' ~ category.IconName) }}" alt="{{ category.IconName }}"></p>
                   		</div>
             	</div>
             	           {% if is_granted('ROLE_ADMIN') %}

@@ -8,10 +8,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 use App\Entity\Entry;
 use App\Form\EntryType;
+use App\Repository\EntryRepository;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
@@ -24,10 +26,26 @@ class FrontController extends AbstractController
      */
     public function index()
     {
+       
+       
         return $this->render('front/index.html.twig', [
             'controller_name' => 'FrontController',
         ]);
+        
     }
+    
+    /**
+     * @Route("/getentries", name="getentries",methods={"POST"})
+     **/
+    public function entries(EntryRepository $entryrepo)
+    {
+        $user = $this->getUser();
+    
+        $entries=$entryrepo->findBy(['publish'=>'1']);
+        return $this->json(['entries' =>$entries],200);
+    }
+    
+    
     
     /**
      *

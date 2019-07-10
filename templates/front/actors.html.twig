@@ -11,7 +11,8 @@
 
 <div class="example-wrapper">
     <h1>Liste des acteurs</h1>
-    {% if app.user %}<p>Cliquez sur un acteur pour le modifier</p>{% else %}<p>Cliquez sur un acteur pour voir les détails</p>{% endif %}
+    <p>Cliquez sur un acteur pour voir les détails{% if app.user %}, ou utilisez les boutons dédiés pour modifier/supprimer un acteur{% endif %}</p>
+    
 	<div class="actors-container">
 			<div class="list">
 			{% for actor in actors %}
@@ -19,28 +20,30 @@
 			<a href="{{ path('actor-view' ,{'id' : actor.id }) }}">
           	
 				<h4>{{ actor.name }} <img class="thumbnails" src="{{ actor.logo }}"></h4>
-				<p>{{ actor.description }}</p>
-         
+				<p>{{ actor.description |truncate(53) }}</p>
+         		<p>
+         		<h5>Catégorie(s) :</h5>
                  {% if not actor.categories.empty %}
-                          <p>
+                          
                             {% for category in actor.categories %}
-                              {{ category.name }}{% if not loop.last %}, {% endif %}
+                            <img class="icon-thumbnails" alt="icone de la catégorie {{ category.name }}" src="{{ asset('uploads/icons/' ~ category.IconName) }}" title="{{ category.name }}">  
                             {% endfor %}
-                          </p>
-                  {% endif %}
+                         
+                 {% else %} aucune catégorie associée...
+                 {% endif %}
+                  </p>
              </a>
-             </div>
-			
-			          {% if app.user %}
-			<div>
+             {% if app.user %}
+			<p class="admin-control">
 			<a href="{{ path('actor-update' ,{'id' : actor.id }) }}"><button class="btn btn-warning"><i class='fas fa-edit'></i></button></a>
 			<a data-confirm="Etes-vous certain de vouloir supprimer l'acteur {{ actor.id }} ?" href="{{ path('actor-delete' ,{'id' : actor.id }) }}"><button class="btn btn-danger"><i class='fas fa-trash'></i></button></a>
-           </div>
+           </p>
         	{% endif %}
+             </div>
        	  
     	  {% endfor%}
 			</div>
-          {{ include('map/map.html.twig') }}
+          {{ include('map/entries-map.html.twig') }}
     	   {% block javascripts %}
             {{ encore_entry_script_tags('vendor') }}
 
