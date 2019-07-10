@@ -1,4 +1,6 @@
  $(document).ready(function() {
+	
+	 
   var map = L.map('map').setView([46.1202996, 5.2091508], 10.2);
   
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -11,22 +13,33 @@
       .openPopup();
   getentries();
   
+
+  
   function getentries (event){
 	  		  var qs = require('qs');
         	  var axios = require('axios');
         	  var entries=[];
         	   var url='http://localhost:8000/'+'getentries';
         	    axios.post(url).then(function(response){
-        	    		entries.push(response.data.entries);
-        	    	
-        	          	console.log(entries);
-        	          	entries.forEach(function(element){
-        	          		alert(qs.stringify(element))
-        	          	})
-        
         	    		
-        	    	})
-        	}
+        	          		console.log(response.data.entries)
+        	  //////////////////////////////////////////////////        		
+        	          		 var cats = [];
+        	          		response.data.entries.forEach (function(POI){
+        	          			         var cat= POI.categories
+        	          			         cats.push(cat);
+        	          			     })
+        	          			    
+        	          		})
+	 
+        	    }        		
+        	          		
+        	 /////////////////////////////////////////////////         		
+ 	          		
+        	          	
+
+        	    		
+        	    	
   })
 
 

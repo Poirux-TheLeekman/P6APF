@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Doctrine\Common\Persistence\ObjectManager;
+use RogerioLino\Doctrine\GeoJson;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
@@ -40,9 +42,51 @@ class FrontController extends AbstractController
     public function entries(EntryRepository $entryrepo)
     {
         $user = $this->getUser();
-    
         $entries=$entryrepo->findBy(['publish'=>'1']);
-        return $this->json(['entries' =>$entries],200);
+        //////////////////////
+       $nbc= count($entries);
+        if ($nbc==0) {
+            return JsonResponse::fromJsonString('aucun acteur publiable pour cette carte ');
+        }else {
+            $geoJsonlist=[];
+            foreach ($entries as $entry){
+                $cat=$entry->getLogo().
+                $geoJsonMarker= '{
+                    "datasetid": "ApfActor",
+                    "recordid": "ef6036c22c658a7e9ec5417cbc87fb3f92dcbd42",
+                    "fields": {
+                    "wgs84": ['.$entry->getLat().','.$entry->getLng().'],
+                    "nom": "'.$entry->getName().'",
+                    "logo": "'.$entry->getLogo().'",
+                    "website": "'.$entry->getWebsite().'",
+                    "mail": "'.$entry->getMail().'",
+                    "description": "'.$entry->getDescription().'",
+                    "adresse": "'.$entry->getAddress().'",
+                    "telephone": "'.$entry->getPhone().'",
+                    "longitude": '.$entry->getLng().',
+                    "latitude": '.$entry->getLat().',
+                    "categorie3": "Coiffeurs",
+                    "categorie2": "Commerces, consommation"
+                    },
+                    "geometry": {
+                    "type": "Point",
+                    "coordinates": [2.249327, 48.822435]
+                    },
+                    "record_timestamp": "2014-08-13T22:12:23+00:00"
+                }';
+                $geoJsonlist[]=$cat;
+               
+                
+            }
+            return $this->json(['entries' =>$geoJsonlist],200);        }
+            
+        
+       
+        
+        
+        
+        //////////////////////
+        
     }
     
     
