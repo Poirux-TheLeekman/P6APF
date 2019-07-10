@@ -39,7 +39,7 @@ class FrontController extends AbstractController
     /**
      * @Route("/getentries", name="getentries",methods={"POST"})
      **/
-    public function entries(EntryRepository $entryrepo)
+    public function entries(EntryRepository $entryrepo, Geojson $geojson)
     {
         $user = $this->getUser();
         $entries=$entryrepo->findBy(['publish'=>'1']);
@@ -50,6 +50,7 @@ class FrontController extends AbstractController
         }else {
             $geoJsonlist=[];
             foreach ($entries as $entry){
+                $cat=$geojson->
                 $cat=$entry->getLogo().
                 $geoJsonMarker= '{
                     "datasetid": "ApfActor",
