@@ -39,18 +39,17 @@ class FrontController extends AbstractController
     /**
      * @Route("/getentries", name="getentries",methods={"POST"})
      **/
-    public function entries(EntryRepository $entryrepo, Geojson $geojson)
+    public function entries(EntryRepository $entryrepo)
     {
         $user = $this->getUser();
         $entries=$entryrepo->findBy(['publish'=>'1']);
         //////////////////////
        $nbc= count($entries);
         if ($nbc==0) {
-            return JsonResponse::fromJsonString('aucun acteur publiable pour cette carte ');
+            return $this->json(['entries' =>'aucun acteur publiable pour cette carte '],200);      
         }else {
             $geoJsonlist=[];
             foreach ($entries as $entry){
-                $cat=$geojson->
                 $cat=$entry->getLogo().
                 $geoJsonMarker= '{
                     "datasetid": "ApfActor",
@@ -75,7 +74,7 @@ class FrontController extends AbstractController
                     },
                     "record_timestamp": "2014-08-13T22:12:23+00:00"
                 }';
-                $geoJsonlist[]=$cat;
+                $geoJsonlist[]=$geoJsonMarker;
                
                 
             }
