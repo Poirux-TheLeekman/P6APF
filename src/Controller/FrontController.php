@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Entry;
 use App\Form\EntryType;
 use App\Repository\EntryRepository;
+use App\Repository\CategoryRepository;
+
 
 use App\Entity\Category;
 use App\Form\CategoryType;
@@ -26,12 +28,12 @@ class FrontController extends AbstractController
     /**
      * @Route("/", name="front")
      */
-    public function index()
+    public function index(EntryRepository $entryrepo, CategoryRepository $category)
     {
-       
-       
+        $user = $this->getUser();
+        $entries=$entryrepo->findBy(['publish'=>'1']);
         return $this->render('front/index.html.twig', [
-            'controller_name' => 'FrontController',
+            'actors' => $entries
         ]);
         
     }
@@ -39,7 +41,7 @@ class FrontController extends AbstractController
     /**
      * @Route("/getentries", name="getentries",methods={"POST"})
      **/
-    public function entries(EntryRepository $entryrepo)
+    public function entries(EntryRepository $entryrepo, CategoryRepository $category)
     {
         $user = $this->getUser();
         $entries=$entryrepo->findBy(['publish'=>'1']);
@@ -50,7 +52,8 @@ class FrontController extends AbstractController
         }else {
             $geoJsonlist=[];
             foreach ($entries as $entry){
-                $cat=$entry->getLogo().
+                
+                
                 $geoJsonMarker= '{
                     "datasetid": "ApfActor",
                     "recordid": "ef6036c22c658a7e9ec5417cbc87fb3f92dcbd42",
@@ -65,7 +68,7 @@ class FrontController extends AbstractController
                     "telephone": "'.$entry->getPhone().'",
                     "longitude": '.$entry->getLng().',
                     "latitude": '.$entry->getLat().',
-                    "categorie3": "Coiffeurs",
+                    "categorie3": "aaaaaa",
                     "categorie2": "Commerces, consommation"
                     },
                     "geometry": {
@@ -75,7 +78,7 @@ class FrontController extends AbstractController
                     "record_timestamp": "2014-08-13T22:12:23+00:00"
                 }';
                 $geoJsonlist[]=$geoJsonMarker;
-               
+                
                 
             }
             return $this->json(['entries' =>$geoJsonlist],200);        }

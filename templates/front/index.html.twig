@@ -4,11 +4,17 @@
 {% block title %}Accueil{% endblock %}
 {% block stylesheets %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+
 {% endblock %}
 
 {% block body %}
 
 
+
+{% for actor in actors %}
+			<div class="hidden-item js-marker" data-lat="{{ actor.lat }}" data-lng="{{ actor.lng }}" data-phone="{{ actor.phone }}" data-path="{{ path('actor-view' ,{'id' : actor.id }) }}"  data-name="{{ actor.name }}" data-mail="{{ actor.mail }}"data-logo="{{ actor.logo }}" {% for category in actor.categories %} data-catname="{{ category.name }}" data-catdescription="{{ category.description }}"data-caticon="{{ category.IconName }}" data-catid="{{ category.id }}"{% endfor %}"></div>
+{% endfor %}
 
 <div class="example-wrapper">
           {{ include('map/map.html.twig') }}
@@ -21,6 +27,5 @@
 			  crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>		
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>	  
-   		   		{{ encore_entry_script_tags('entry-marker')}} 
 {% endblock %}
 {% endblock %}

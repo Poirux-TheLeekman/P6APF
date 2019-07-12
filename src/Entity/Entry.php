@@ -38,8 +38,14 @@ class Entry
     private $description;
     
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $address;
+    
+    /**
      * @ORM\Column(type="integer", nullable=true)
      */
+    
     private $phone;
     
     /**
@@ -67,10 +73,7 @@ class Entry
      */
     private $publish;
     
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", mappedBy="actors")
-     */
-    private $categories;
+
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -83,15 +86,16 @@ class Entry
     private $lng;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="entries")
      */
-    private $address;
+    private $Categories;
+
 
     
     
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        $this->Categories = new ArrayCollection();
     }
     
     
@@ -197,36 +201,7 @@ class Entry
         return $this;
     }
     
-    /**
-     * @return Collection|Category[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-    
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-            $category->addActor($this);
-        }
-        
-        return $this;
-    }
-    
-    public function removeCategory(Category $category): self
-    {
-        if ($this->categories->contains($category)) {
-            $this->categories->removeElement($category);
-            $category->removeActor($this);
-        }
-        
-        return $this;
-    }
-    public function updatecategories($category) {
-        $this->categories[]=$category ;
-    }
+  
 
     public function getLat(): ?float
     {
@@ -260,6 +235,32 @@ class Entry
     {
         $this->address = $address;
         
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->Categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->Categories->contains($category)) {
+            $this->Categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->Categories->contains($category)) {
+            $this->Categories->removeElement($category);
+        }
+
         return $this;
     }
   

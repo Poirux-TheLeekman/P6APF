@@ -27,7 +27,8 @@ Encore
     .addEntry('apf', './assets/js/apf.js')
     .addEntry('vendor', './assets/js/vendor.js')
     .addEntry('marker-create', './assets/js/map-marker-create.js')
-    .addEntry('entry-marker', './assets/js/map-entry-marker.js')
+    .addEntry('entries-marker', './assets/js/map-entries-marker.js')
+    .addEntry('mainmap', './assets/js/mainmap.js')
 
 
 

@@ -41,16 +41,18 @@ use Symfony\Component\Validator\Constraints as Assert;
          * @Assert\File(mimeTypes={ "image/png" })
          */
         private $icon;
-        
-        
+
         /**
-         * @ORM\ManyToMany(targetEntity="App\Entity\Entry", inversedBy="categories")
+         * @ORM\ManyToMany(targetEntity="App\Entity\Entry", mappedBy="Categories")
          */
-        private $actors;
+        private $entries;
+        
+        
+
         
         public function __construct()
         {
-            $this->actors = new ArrayCollection();
+            $this->entries = new ArrayCollection();
         }
         
         public function getId(): ?int
@@ -108,30 +110,34 @@ use Symfony\Component\Validator\Constraints as Assert;
             
             
         }
-        
+
         /**
-         * @return Collection|Actor[]
+         * @return Collection|Entry[]
          */
-        public function getActors(): Collection
+        public function getEntries(): Collection
         {
-            return $this->actors;
+            return $this->entries;
         }
-        
-        public function addActor(Actor $actor): self
+
+        public function addEntry(Entry $entry): self
         {
-            if (!$this->actors->contains($actor)) {
-                $this->actors[] = $actor;
+            if (!$this->entries->contains($entry)) {
+                $this->entries[] = $entry;
+                $entry->addCategory($this);
             }
-            
+
+            return $this;
+        }
+
+        public function removeEntry(Entry $entry): self
+        {
+            if ($this->entries->contains($entry)) {
+                $this->entries->removeElement($entry);
+                $entry->removeCategory($this);
+            }
+
             return $this;
         }
         
-        public function removeActor(Actor $actor): self
-        {
-            if ($this->actors->contains($actor)) {
-                $this->actors->removeElement($actor);
-            }
-            
-            return $this;
-        }
+  
 }

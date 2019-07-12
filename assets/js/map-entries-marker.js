@@ -1,6 +1,4 @@
- <div id="map" style="height: 100%; width:100%"></div>
-  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-  <script>
+
   var bounds=[[46.2, 5.2]];
   var map = L.map('map',{scrollWheelZoom:false});
 
@@ -10,7 +8,7 @@
 
 	class EntryMarker {
 		constructor (lat, lng, logo, name, text){
-			this.text= text
+			this.text= null;
 			this.shortText='<img class="thumbnail-logo" src="'+logo+'">' +name
 			this.popup = L.popup({
 			     autoClose:false,
@@ -40,6 +38,8 @@
 				}
 			setContent (text){
 				this.popup.setContent(text)
+			    this.popup.setCloseButton(true),
+				
 				this.popup.getElement().classList.add('expanded')
 				this.popup.update()
 				}
@@ -89,5 +89,3 @@
  	map.fitBounds(bounds);
 
 	  
-
-  </script>

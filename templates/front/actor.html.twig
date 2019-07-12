@@ -7,15 +7,16 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 <div class="example-wrapper">
-    <h1>fiche Acteur ID: {{ actor.id }}</h1>
+    <h2>Fiche Acteur :</h2>
 	<div class="container" style="display: flex;">
         	<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
-          		<div class="card-title"><h4>{{ actor.name }}</h4></div>
+          		<div class="card-title"><h4><b>{{ actor.name }}</b></h4></div>
              	 	<div class="card-body">
                 	<p class="card-text">{{ actor.description }}</p>
-                	                	<p class="card-text">{{ actor.mail }}</p>                	
-                	                	<p class="card-text">{{ actor.website }}</p>
-                	<p class="card-text">catégorie(s) :</p>
+                	                	<p class="card-text"><b>Mail : </b>{{ actor.mail }}</p>     
+										<p class="card-text"><b>Tel : </b>{{ actor.phone }}</p>                	           	
+                	                	<p class="card-text"><b>Site internet : </b>{{ actor.website }}</p>
+                	<p class="card-text"><b>catégorie(s) :</b></p>
 						<p class="card-text">
 					   {% if not actor.categories.empty %}
                       <ul>

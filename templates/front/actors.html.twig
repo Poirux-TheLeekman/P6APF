@@ -17,12 +17,10 @@
 			<div class="list">
 			{% for actor in actors %}
 			<div class="item js-marker" data-lat="{{ actor.lat }}" data-lng="{{ actor.lng }}"  data-name="{{ actor.name }}" data-logo="{{ actor.logo }}">
-			<a href="{{ path('actor-view' ,{'id' : actor.id }) }}">
-          	
+				<a href="{{ path('actor-view' ,{'id' : actor.id }) }}">
 				<h4>{{ actor.name }} <img class="thumbnails" src="{{ actor.logo }}"></h4>
-				<p>{{ actor.description |truncate(53) }}</p>
-         		<p>
-         		<h5>Catégorie(s) :</h5>
+				<p>
+         		<em>Catégorie(s) :</em>
                  {% if not actor.categories.empty %}
                           
                             {% for category in actor.categories %}
@@ -32,7 +30,11 @@
                  {% else %} aucune catégorie associée...
                  {% endif %}
                   </p>
-             </a>
+                <p><i class="fas fa-phone"></i> : {{ actor.phone }}</p>
+                </a>
+				<p><a href="mailto:{{ actor.mail }}"><i class="fas fa-envelope-open-text"></i> : {{ actor.mail }}</a></p>	
+         	
+             
              {% if app.user %}
 			<p class="admin-control">
 			<a href="{{ path('actor-update' ,{'id' : actor.id }) }}"><button class="btn btn-warning"><i class='fas fa-edit'></i></button></a>
@@ -40,18 +42,16 @@
            </p>
         	{% endif %}
              </div>
-       	  
     	  {% endfor%}
 			</div>
-          {{ include('map/entries-map.html.twig') }}
+          {{ include('map/map-actors.html.twig') }}
     	   {% block javascripts %}
             {{ encore_entry_script_tags('vendor') }}
-
+		    
             <!-- Renders app.js & a webpack runtime.js file
                 <script src="/build/runtime.js"></script>
                 <script src="/build/app.js"></script> -->
         {% endblock %}
-			<script src="{{ asset('build/vendor.js') }}"></script>    	  
     	  <script>
 			
 

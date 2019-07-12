@@ -12,6 +12,10 @@ margin: 1em auto; width:90%; font: 18px/1.5 sans-serif;
 .example-wrapper code { 
 background: #F5F5F5; padding: 2px 6px;
 }   
+
+.desc{
+font-size:0.8em;
+    }
 .modal-content{
 background-color:#87999A;
 						
@@ -27,6 +31,13 @@ margin:auto;
 {
 margin:-1rem -1rem -1rem -1rem;
 }
+.card-title{
+	margin : 5px;
+	padding: 5px;
+	background-color : #DCDCDC;
+	color : black;
+}
+
 
 #map{
 	height:100vh;
@@ -40,7 +51,7 @@ margin:-1rem -1rem -1rem -1rem;
 	.actors-container{
 	
 	display:grid;
-	grid-template-columns: 7fr 4fr;
+	grid-template-columns: 6fr 4fr;
 	}
     
 	.list{
@@ -50,6 +61,7 @@ margin:-1rem -1rem -1rem -1rem;
 		grid-column-gap:10px;
 		grid-row-gap:10px;
 		padding: 0 10px;
+		min-height:80%;
 		
 		
 	}
@@ -58,6 +70,16 @@ margin:-1rem -1rem -1rem -1rem;
 	background-color : LightGrey ;
 	padding: 0 10px;
 	overflow-wrap: break-word;
+	
+}
+.actors-list{
+		max-height:20%;
+}
+.hidden-item {
+	background-color : LightGrey ;
+	padding: 0 10px;
+	overflow-wrap: break-word;
+	display:none;
 	
 }
 .item > a{
@@ -130,6 +152,7 @@ margin:-1rem -1rem -1rem -1rem;
 	box-shadow:none;
 	text-align:inherit;
 	
+	
 }
 .entry-marker .leaflet-popup-content{
 	text-align:inherit;
@@ -149,12 +172,15 @@ margin:-1rem -1rem -1rem -1rem;
 
 
 .entry-marker.active::after, .entry-marker:hover::after{
-	border-top-color:#2C3E50
+	border-top-color:#2C3E50;
+	margin:-7px;
+	
 }
-.entry-marker.expended {
+.entry-marker.expanded {
 	z-index:301;
 	background-color: #DCDCDC!important;
 	color: inherit!important;
+	
 }
 
 /* leaflet command*/
