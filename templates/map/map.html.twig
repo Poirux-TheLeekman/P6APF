@@ -1,6 +1,9 @@
  <div id="map"></div>
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-  <script>	  
+  <script>	
+
+	 let hoverMarker = null
+	 let activeMarker = null   
   var bounds=[];
   var map = L.map('map',{scrollWheelZoom:false});
 
@@ -50,10 +53,16 @@
 			   	 if (this.checked) { 
 				   	 if (cats.includes(i)==false){				   	
 					cats.push(i)
+					
+
+					
+					
+					
 					}        
 			    } else {
 	    		    	cats=cats.filter(function(value,index,arr){
 							return value != i
+							
 	        		    	})
 	    		  }
 			   	console.log(cats) 
@@ -66,8 +75,10 @@
 	   
 	   
 	   class EntryMarker {
-	 		constructor (lat,lng,icon,catdescription,logo,name,text ){
+	 		constructor (lat,lng,icon,catdescription,logo,name,text,catid ){
 	 			this.text= text
+	 			this.lat=lat
+	 			this.lng=lng
 	 			  // custome icon from  actor category
 	 			  var myIcon = L.icon({
 	 				    iconUrl: '../uploads/icons/'+icon,
@@ -88,18 +99,13 @@
 	 					
 	 				}).setLatLng([lat,lng])
 	 				  .setContent(this.shortText)
-	 			  //.openOn(map)
-	 				  
-	 			L.marker([lat, lng],{icon:myIcon}).addTo(map)
-	 			.bindPopup(this.popup)
 
+		 			  //.openOn(map)
+	 	 			 L.marker([lat, lng],{icon:myIcon}).addTo(map)
+	 	 			.bindPopup(this.popup)	 
+		 			
 	 			}
-                addhidden(){
-                    this.getElement.setAttribute("hidden")
-                    }
-                removehidden(){
-                    this.getElement.removeAttribute("hidden")
-                    }
+					
 	 			setActive(){
 	 				this.popup.getElement().classList.add('active')
 
@@ -124,32 +130,36 @@
 	 				this.popup.update()
 	 				
 	 				}
-
+			
 	 		}
 
-	 let hoverMarker = null
-	 let activeMarker = null 
-	 	  
-    	 for (var i = 0; i < entries.length; i++) {
-    
-    	      if (cats.includes(entries[i]["catid"])){
-    	   	   let marker = new EntryMarker (entries[i]["lat"], entries[i]["lng"],entries[i]["caticon"], entries[i]["catdescription"],entries[i]["logo"], entries[i]["name"],entries[i]["text"]);
-    
-    
-    		 	 marker.addEventListener('click', function(){
-    		 			if (activeMarker !==null){
-    		 			activeMarker.resetContent()
-    		 				}
-    		 		marker.setContent()
-    		 		activeMarker = marker
-    		 		 })	
-    
-    		      }
-    	 
+
+	 for (var i = 0; i < entries.length; i++) {
+
+ 			  let marker = new EntryMarker (entries[i]["lat"], entries[i]["lng"],entries[i]["caticon"], entries[i]["catdescription"],entries[i]["logo"], entries[i]["name"],entries[i]["text"],entries[i]["catid"]);
+     	      
+  		 	 marker.addEventListener('click', function(){
+  		 			if (activeMarker !==null){
+  		 			activeMarker.resetContent()
+  		 				}
+  		 		marker.setContent()
+  		 		activeMarker = marker
+  		 		 })	
+	 	}
+ 	 		
+
+	
+
+	    
+			
+	        	 
+	    	
+       	   	  
+				
+    		      
+	 
            
-
-	 }
-
+	
 
 
 
@@ -161,7 +171,6 @@
 	 
 
 
-	 	  
 	 	map.fitBounds(bounds);
 		
 

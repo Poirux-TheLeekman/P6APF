@@ -86,7 +86,13 @@ class Entry
     private $lng;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="entries")
+     * @var ArrayCollection
+     * Owning Side
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="entries", cascade={"persist", "merge"})
+     * @ORM\JoinTable(name="entry_category")
+     *      joinColumns={@JoinColumn(name="entry_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="category_id", referencedColumnName="id")}
+     *      )
      */
     private $Categories;
 

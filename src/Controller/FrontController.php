@@ -39,9 +39,19 @@ class FrontController extends AbstractController
     }
     
     /**
+     * @Route("/test", name="front2")
+     */
+    public function index2(EntryRepository $entryrepo, CategoryRepository $category)
+    {
+        $user = $this->getUser();
+        return $this->render('front/index3.html.twig', [
+        ]);
+        
+    }
+    /**
      * @Route("/getentries", name="getentries",methods={"POST"})
      **/
-    public function entries(EntryRepository $entryrepo, CategoryRepository $category)
+    public function entries(Request $request,EntryRepository $entryrepo, CategoryRepository $category)
     {
         $user = $this->getUser();
         $entries=$entryrepo->findBy(['publish'=>'1']);
@@ -51,38 +61,57 @@ class FrontController extends AbstractController
             return $this->json(['entries' =>'aucun acteur publiable pour cette carte '],200);      
         }else {
             $geoJsonlist=[];
+            
             foreach ($entries as $entry){
-                
-                
-                $geoJsonMarker= '{
-                    "datasetid": "ApfActor",
-                    "recordid": "ef6036c22c658a7e9ec5417cbc87fb3f92dcbd42",
-                    "fields": {
-                    "wgs84": ['.$entry->getLat().','.$entry->getLng().'],
-                    "nom": "'.$entry->getName().'",
-                    "logo": "'.$entry->getLogo().'",
-                    "website": "'.$entry->getWebsite().'",
-                    "mail": "'.$entry->getMail().'",
-                    "description": "'.$entry->getDescription().'",
-                    "adresse": "'.$entry->getAddress().'",
-                    "telephone": "'.$entry->getPhone().'",
-                    "longitude": '.$entry->getLng().',
-                    "latitude": '.$entry->getLat().',
-                    "categorie3": "aaaaaa",
-                    "categorie2": "Commerces, consommation"
-                    },
-                    "geometry": {
-                    "type": "Point",
-                    "coordinates": [2.249327, 48.822435]
-                    },
-                    "record_timestamp": "2014-08-13T22:12:23+00:00"
-                }';
-                $geoJsonlist[]=$geoJsonMarker;
-                
+                    $categories= $entry->getCategories();
+                    $geoJsonMarker=[];
+                    $geoJsonMarker["datasetid"]="ApfActors";
+
+                    $i=0;
+                    foreach ($categories as $category) {
+                        $i=$i+1;
+                        $name=$category->getName();
+                        $id=$category->getId();
+                        
+                        $cat="categorie".$i;
+                        $caticon="categorieicon".$i;
+                        $catdesc="categoriedescription".$i;
+                        $catid="categorieid".$i;
+                        $fields[$catid]=$id;
+                        $fields[$cat]=$name;
+                        $fields[$caticon]=$category->getIconName();
+                        $fields[$catdesc]=$category->getDescription();
+                        
+                        
+                    }
+                    $fields["wgs84"]=[$entry->getLat().','.$entry->getLng()];
+                    $fields["name"]=$entry->getName();
+                    $fields["logo"]= $entry->getLogo();
+                    $fields["website"]= $entry->getWebsite();
+                    $fields["mail"]=$entry->getMail();
+                    $fields["description"]=$entry->getDescription();
+                    $fields["adresse"]=$entry->getAddress();
+                    $fields["telephone"]=$entry->getPhone();
+                    $fields["longitude"]=$entry->getLng();
+                    $fields["latitude"]=$entry->getLat();
+                    
+                    $geoJsonMarker["properties"]=$fields;
+                    
+                    $geoJsonMarker["type"]="Point";
+                    $geoJsonMarker["coordinates"]=['.$entry->getLat().','.$entry->getLng().'];
+                    $geoJsonMarker["geometry"]= array();
+                    $geoJsonMarker["geometry"].push($geoJsonMarker["type"]);
+                    $geoJsonMarker["geometry"].push($geoJsonMarker["coordinates"]);
+
+
+                    $geoJsonlist[]=$geoJsonMarker;
+                    
                 
             }
-            return $this->json(['entries' =>$geoJsonlist],200);        }
-            
+            $entriesmarker=$geoJsonlist;
+            return new JsonResponse($entriesmarker);
+        //    return $this->json([$geoJsonlist],200);       
+        }
         
        
         
@@ -92,7 +121,86 @@ class FrontController extends AbstractController
         
     }
     
-    
+    /**
+     * @Route("/getentries2", name="getentries2",methods={"POST"})
+     **/
+    public function entries2(Request $request,EntryRepository $entryrepo, CategoryRepository $category)
+    {
+        $user = $this->getUser();
+        $entries=$entryrepo->findBy(['publish'=>'1']);
+        //////////////////////
+        $nbc= count($entries);
+        if ($nbc==0) {
+            return $this->json(['entries' =>'aucun acteur publiable pour cette carte '],200);
+        }else {
+            $geoJsonlist=[];
+            $geoJsonlist["type"]="FeatureCollection";
+            foreach ($entries as $entry){
+                $categories= $entry->getCategories();
+                $geoJsonMarker=[];
+                $geoJsonMarker["type"]="Feature";
+                $i=0;
+                foreach ($categories as $category) {
+                    $i=$i+1;
+                    $name=$category->getName();
+                    $id=$category->getId();
+                    
+                    $cat="categorie".$i;
+                    $caticon="categorieicon".$i;
+                    $catdesc="categoriedescription".$i;
+                    $catid="categorieid".$i;
+                    $fields[$catid]=$id;
+                    $fields[$cat]=$name;
+                    $fields[$caticon]=$category->getIconName();
+                    $fields[$catdesc]=$category->getDescription();
+                    
+                    
+                }
+                $wsg=[];
+                array_push($wsg,$entry->getLat());
+                array_push($wsg,$entry->getLng());
+                $fields["wgs84"]=$wsg;
+                $fields["name"]=$entry->getName();
+                $fields["logo"]= $entry->getLogo();
+                $fields["id"]= $entry->getId();
+                $fields["website"]= $entry->getWebsite();
+                $fields["mail"]=$entry->getMail();
+                $fields["description"]=$entry->getDescription();
+                $fields["adresse"]=$entry->getAddress();
+                $fields["telephone"]=$entry->getPhone();
+                $fields["longitude"]=$entry->getLng();
+                $fields["latitude"]=$entry->getLat();
+                $geoJsonMarker["properties"]=$fields;
+                $geometry["type"]="Point";
+                $geo=[];
+                array_push($geo,$entry->getLng());
+                array_push($geo,$entry->getLat());
+                $geometry["coordinates"]=$geo;
+                $geoJsonMarker["geometry"]= $geometry;
+                
+                
+                
+                
+                
+                
+                $geoJsonlist["features"][]=$geoJsonMarker;
+                
+                
+            }
+            
+            
+            $entriesmarker=json_encode($geoJsonlist);
+            return new JsonResponse($entriesmarker);
+            //    return $this->json([$geoJsonlist],200);
+        }
+        
+        
+        
+        
+        
+        //////////////////////
+        
+    }
     
     /**
      *
@@ -181,7 +289,6 @@ class FrontController extends AbstractController
     {
         $repo= $this->getDoctrine()->getRepository(Entry::class);
         $entry=$repo->find($id);
-        
         
         return $this->render('front/actor.html.twig',  [
             'actor' => $entry

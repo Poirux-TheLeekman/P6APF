@@ -43,7 +43,8 @@ use Symfony\Component\Validator\Constraints as Assert;
         private $icon;
 
         /**
-         * @ORM\ManyToMany(targetEntity="App\Entity\Entry", mappedBy="Categories")
+         * @var ArrayCollection
+         * @ORM\ManyToMany(targetEntity="App\Entity\Entry", mappedBy="Categories", cascade={"persist"})
          */
         private $entries;
         

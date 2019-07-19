@@ -1,0 +1,277 @@
+ <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>	  
+    	 <script>	
+    	 
+
+
+var bounds=[[46.2, 5.2]];
+
+var command = L.control({position: 'topright'});
+var map = L.map('map',{scrollWheelZoom:false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);		  
+
+   var url='http://localhost:8000/'+'getentries2';
+    axios.post(url).then(function(response){
+
+        var geojson= JSON.parse(response.data)
+        
+        var parse= response.data
+        console.log(geojson)
+        
+        console.log(parse)	
+
+
+     
+     var cats = [];
+     for (var i = 0; i < geojson.features.length; i++) {
+         console.log(geojson.features[i]) 
+             cat = {
+                 "interestPoints" : createInterestPoints(),
+                 "id" : "cat" + i,
+                 "label" : geojson.features[i].properties.categorie1
+             }
+             cats.push(cat);
+         cat["interestPoints"].addData(geojson.features[i]);
+       
+     }
+     console.log("cats")
+     console.log(cats)
+
+     function getIcon(categorie1, categorie2, categorie3) {
+    		if (categorie3 === "Service d'accompagnement à la personne") {
+    			return "SAP.png";
+    		} else if (categorie3 === "Transport") {
+    			return  "transport.png";
+    		} else if (categorie3 === "Mairie et municipali\u00e9s") {
+    			return  "government.png";
+    		} else if (categorie3 === "Bijouteries") {
+    			return  "map-icons/jewelry.png";
+    		} else if (categorie3 === "Ameublement-D\u00e9coration") {
+    			return  "map-icons/furniture-stores.png";
+    		} else if (categorie3 === "Librairies-Papeteries-Presse") {
+    			return  "map-icons/libraries.png";
+    		} else if (categorie3 === "Cadeaux ou jouets") {
+    			return  "map-icons/gifts-flowers.png";
+    		} else if (categorie3 === "Agences de voyages") {
+    			return  "map-icons/travel.png";
+    		} else if (categorie3 === "Epiceries, sup\u00e9rettes et grande distribution") {
+    			return  "map-icons/shopping.png";
+    		} else if (categorie3 === "Aide \u00e0 l'emploi et d\u00e9veloppement \u00e9conomique") {
+    			return  "map-icons/employment.png";
+    		} else if (categorie3 === "Musique") {
+    			return  "map-icons/musical-instruments.png";
+    		} else if (categorie3 === "Arbres remarquables") {
+    			return  "map-icons/marker-new1_12.png";
+    		} else if (categorie3 === "Bureaux de vote") {
+    			return  "map-icons/government.png";
+    		} else if (categorie3 === "Sculptures de m\u00e9tal") {
+    			return  "map-icons/museums.png";
+    		} else if (categorie3 === "Equipements sportifs, accès réservé") {
+    			return  "map-icons/sporting-goods.png";
+    		} else if (categorie3 === "Parcs") {
+    			return  "map-icons/parks.png";
+    		} else if (categorie3 === "Restauration-Bars-Tabacs") {
+    			return  "map-icons/restaurants.png";
+    		} else if (categorie3 === "Agences immobilières") {
+    			return  "map-icons/real-estate.png";
+    		} else if (categorie3 === "Animalerie-Toilettage") {
+    			return  "map-icons/pets.png";
+    		} else if (categorie3 === "Stations services-Lavage") {
+    			return  "map-icons/automotive.png";
+    		} else if (categorie3 === "Marchés") {
+    			return  "map-icons/miscellaneous-for-sale.png";
+    		} else if (categorie3 === "Centres, cliniques et hôpitaux") {
+    			return  "map-icons/health-medical.png";
+    		} else if (categorie3 === "Pharmacies") {
+    			return  "map-icons/medical.png";
+    		} else if (categorie3 === "Parkings voitures sous-sol") {
+    			return  "map-icons/automotive.png";
+    		}
+    		
+    		if (categorie2 === "Service d'accompagnement à la personne") {
+    			return "SAP.png";
+    		} else if (categorie3 === "Transport") {
+    			return  "transport.png";
+    		} else if (categorie3 === "Mairie et municipali\u00e9s") {
+    			return  "government.png";
+    		} else if (categorie2 === "Hôtels et chambres d'hôtes") {
+    			return  "map-icons/hotels.png";
+    		} else if (categorie2 === "Petite Enfance") {
+    			return  "map-icons/play-schools.png";
+    		} else if (categorie3 === "Cyber cité") {
+    			return  "map-icons/internet.png";
+    		}
+
+    		if (categorie1 === "Service d'accompagnement à la personne") {
+    			return "SAP.png";
+    		} else if (categorie1 === "Transports") {
+    			return  "transport.png";
+    		} else if (categorie1 === "Mairie et municipalités") {
+    			return  "government.png";
+    		} else if (categorie2 === "Hôtels et chambres d'hôtes") {
+    			return  "map-icons/hotels.png";
+    		} else if (categorie2 === "Petite Enfance") {
+    			return  "map-icons/play-schools.png";
+    		} else if (categorie3 === "Cyber cité") {
+    			return  "map-icons/internet.png";
+    		}
+    		
+    		return "unknown.png";
+    	}
+
+
+
+
+
+
+
+
+     
+     function createInterestPoints () {
+    	    return new L.geoJson([], {
+    	        pointToLayer: function(feature, latlng) {
+
+    	        	
+    	            var smallIcon = L.icon({
+    	                iconUrl: "uploads/icons/" + /*icon-provider.js*/getIcon(feature.properties.categorie1, feature.properties.categorie2, feature.properties.categorie3),
+    	                //shadowUrl: 'icon-shadow.png',
+    	                iconSize:     [33, 44], // taille de l'icone
+    	                //shadowSize:   [50, 64], // taille de l'ombre
+    	                iconAnchor:   [16, 44], // point de l'icone qui correspondra à la position du marker
+    	                //shadowAnchor: [32, 64],  // idem pour l'ombre
+    	                popupAnchor:  [-3, -76] // point depuis lequel la popup doit s'ouvrir relativement à l'iconAnchor
+    	            });
+    	            var marker= L.marker(latlng, {icon: smallIcon})
+    	            return marker
+    	        },
+    	        onEachFeature: function(feature, layer) {
+
+    	            var html = '';
+    	            if (feature.properties.name) {
+    	            	if (feature.properties.description) {
+        	            	if (feature.properties.logo) {
+        	    	            if (feature.properties.website) {
+                	                html +='<a href="' + feature.properties.website + '" target="_blank"><img class="thumbnail-logo" title="'+feature.properties.description+'" src="'+feature.properties.logo+'">  <b>' +feature.properties.name + '</b></br></a>';
+        	    	            }
+        	    	            else{
+                	                html +='<img class="thumbnail-logo" title="'+feature.properties.description+'" src="'+feature.properties.logo+'">  <b>' +feature.properties.name + '</b></br>';
+            	    	            
+            	            	}
+        	            	}
+    	            	}
+    	             }
+    	            if (feature.properties.categorie1) {
+    	                html += 'Catégorie(s) : ' + feature.properties.categorie1;
+    	            }
+    	            if (feature.properties.categorie2) {
+    	                html += ', ' + feature.properties.categorie2;
+    	            }
+    	            if (feature.properties.categorie3) {
+    	                html += ', ' + feature.properties.categorie3 + '.';
+    	            }
+	                html += '<hr><a href="http://localhost:8000/actor/view/' + feature.properties.id + '"><a href="#" class="btn btn-xs btn-secondary"><span class="glyphicon glyphicon-zoom-in"></span> plus d\'info...</a></a>';
+    	        	var popup = L.popup({
+   	 			     autoClose:false,
+   	 			     closeOnEscapeKey: false,
+   	 			     closeOnClick:true,
+   	 			     closeButton:true,
+   	 			     className:'entry-marker',
+   	 			     maxWidth:300
+   	 					
+   	 				}).setLatLng([feature.properties.latitude, feature.properties.longitude])
+   	 				  .setContent(html)
+
+   	 				  
+   		 			  //.openOn(layer)
+		            layer.bindPopup(popup);
+    	        }
+    	    });
+    	}
+
+
+
+
+     var command = L.control({position: 'topright'});
+     command.onAdd = function (map) {
+         var div = L.DomUtil.create('div', 'command');
+         for (var i = 0; i < cats.length; i++) {
+             div.innerHTML += '<form><input id="' + cats[i]["id"] + '" type="checkbox"/>' + cats[i]["label"] + '</form>';
+         }
+         div.innerHTML +='<a id="coche" href="#" class="btn btn-sm btn-primary">tous</a>';
+         return div;
+     };
+
+
+
+	 
+	     
+     command.addTo(map);
+
+     for (var i = 0; i < cats.length; i++) {
+		 	
+	 		document.getElementById(cats[i]["id"]).checked =true
+	 		}
+
+	 	function allCommand () {
+	 		for (var i = 0; i < cats.length; i++) {
+			 	
+	 		document.getElementById(cats[i]["id"]).checked =true
+	 		}
+			console.log('okokok')	 
+	 		
+	 	}
+
+	for (var i = 0; i < cats.length; i++) {
+    	    document.getElementById(cats[i]["id"]).addEventListener("change", handleCommand, false);
+    }
+
+    	function handleCommand() {
+    	    var selectedCat;
+    	    for (var i = 0; i < cats.length; i++) {
+    	        if (cats[i]["id"] === this.id) {
+    	            selectedCat = cats[i];
+    	            break;
+    	        }
+    	    }
+    	    if (this.checked) {
+    	        selectedCat["interestPoints"].addTo(map);
+    	        	for (var mark in cats[i].interestPoints._layers){
+        	        	var latlng=[]
+
+        	        	for (var bound in bounds){
+            	        	
+						if (bounds[bound] !== [cats[i].interestPoints._layers[mark]._latlng.lat,cats[i].interestPoints._layers[mark]._latlng.lng]){
+	    	        		var addbound =([cats[i].interestPoints._layers[mark]._latlng.lat,cats[i].interestPoints._layers[mark]._latlng.lng])
+							
+							}						
+						}
+	    	        	bounds.push(addbound);
+    	        	console.log(cats[i].interestPoints._layers[mark]._latlng.lat)}
+    	        	map.fitBounds(bounds);
+        	        console.log(bounds)
+    	        	
+    	        	
+    	    } else {
+    	        map.removeLayer(selectedCat["interestPoints"]);
+	        	for (var mark in cats[i].interestPoints._layers){
+    	        bounds= bounds.filter(function(value, index, arr){
+								var val=[cats[i].interestPoints._layers[mark]._latlng.lat,cats[i].interestPoints._layers[mark]._latlng.lng]
+					return value != val
+        	        })
+	        	}
+    	        	map.fitBounds(bounds);
+    	        console.log(bounds)
+    	    }
+    	}
+        document.getElementById("coche").addEventListener("click", allCommand, false);
+      	
+    	map.fitBounds(bounds);
+    	
+     
+	})//end of axios response
+            
+            
+            	  </script>      
