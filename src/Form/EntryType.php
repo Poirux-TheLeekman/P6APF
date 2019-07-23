@@ -42,7 +42,7 @@ class EntryType extends AbstractType
             ->add('lat',HiddenType::class)
             ->add('lng',HiddenType::class)
             ->add('address', TextType::class,[
-                'label'=>'au format ( N° voirie code postal Commune) puis cliquer sur Rechercher'])
+                'label'=>'Entrer un nom de Commune ou une adresse complete puis cliquer sur Rechercher'])
             
             ;
        
