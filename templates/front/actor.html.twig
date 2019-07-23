@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block title %}Actor view{% endblock %}
-
+{% block stylesheets %}
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+{% endblock %}
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif;   }
@@ -12,10 +14,12 @@
         	<div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
           		<div class="card-title"><h4><b>{{ actor.name }}</b></h4></div>
              	 	<div class="card-body">
-                	<p class="card-text">{{ actor.description }}</p>
-                	                	<p class="card-text"><b>Mail : </b>{{ actor.mail }}</p>     
-										<p class="card-text"><b>Tel : </b>{{ actor.phone }}</p>                	           	
-                	                	<p class="card-text"><b>Site internet : </b>{{ actor.website }}</p>
+                	<p class="card-text"><p class="desc">{{ actor.description }}</</p>
+										<p class="card-text"><i class="fas fa-home"></i><b> : </b>{{ actor.address }}</p>     
+                	                	<p class="card-text"><a href="mailto:{{ actor.mail }}"><i class="fas fa-envelope-open-text"></i><b> : </b>{{ actor.mail }}</a></p>     
+										<p class="card-text"><img src="../../uploads/phone2.svg"><b> : </b>{{ actor.phone }} {% if actor.fax%}<br>fax : {{ actor.fax }} {% endif %}
+										</p>                	           	
+                	                	<p class="card-text"><a href="{{ actor.website }}" target="_blank">{{ actor.website }}</a></p>
                 	<p class="card-text"><b>catégorie(s) :</b></p>
 						<p class="card-text">
 					   {% if not actor.categories.empty %}

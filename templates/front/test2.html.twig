@@ -12,12 +12,9 @@
 
 
 
-{% for actor in actors %}
-			<div class="hidden-item js-marker" data-lat="{{ actor.lat }}" data-lng="{{ actor.lng }}" data-phone="{{ actor.phone }}" data-path="{{ path('actor-view' ,{'id' : actor.id }) }}"  data-name="{{ actor.name }}" data-mail="{{ actor.mail }}"data-logo="{{ actor.logo }}" {% for category in actor.categories %} data-catname="{{ category.name }}" data-catdescription="{{ category.description }}"data-caticon="{{ category.IconName }}" data-catid="{{ category.id }}"{% endfor %}"></div>
-{% endfor %}
 
 <div class="example-wrapper">
-          {{ include('map/map.html.twig') }}
+          {{ include('map/maptest2.html.twig') }}
  
 </div>
 {% block javascripts %}
@@ -26,7 +23,5 @@
 			  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
 			  crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>		
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>	
-<<script src="https://cdnjs.cloudflare.com/ajax/libs/esri-leaflet/2.3.0/esri-leaflet.js"></script>  
 {% endblock %}
 {% endblock %}

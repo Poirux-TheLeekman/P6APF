@@ -1,184 +1,214 @@
- <div id="map"></div>
+<div id="map"></div>
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-  <script>	
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>	  
+  <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@2.3.0/dist/esri-leaflet.js"
+    integrity="sha512-1tScwpjXwwnm6tTva0l0/ZgM3rYNbdyMj5q6RSQMbNX6EUMhYDE3pMRGZaT41zHEvLoWEK7qFEJmZDOoDMU7/Q=="
+    crossorigin=""></script>
 
-	 let hoverMarker = null
-	 let activeMarker = null   
-  var bounds=[];
-  var map = L.map('map',{scrollWheelZoom:false});
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  <!-- Load Esri Leaflet Geocoder from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.14/dist/esri-leaflet-geocoder.css"
+    integrity="sha512-v5YmWLm8KqAAmg5808pETiccEohtt8rPVMGQ1jA6jqkWVydV5Cuz3nJ9fQ7ittSxvuqsvI9RSGfVoKPaAJZ/AQ=="
+    crossorigin="">
+  <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.14/dist/esri-leaflet-geocoder.js"
+    integrity="sha512-uK5jVwR81KVTGe8KpJa1QIN4n60TsSV8+DPbL5wWlYQvb0/nYNgSOg9dZG6ViQhwx/gaMszuWllTemL+K+IXjg=="
+    crossorigin=""></script>
+<script>
+
+
+
+var bounds=[];
+
+var command = L.control({position: 'topright'});
+var map = L.map('map',{scrollWheelZoom:false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);		  
+
+   var url='http://localhost:8000/'+'getentries';
+    axios.post(url).then(function(response){
+
+        var geojson= JSON.parse(response.data.tab)
+     
+     var cats = [];
+     for (var geojsonlist in geojson) {
+             cat = {
+                 "interestPoints" : createInterestPoints(),
+                 "id" :  geojsonlist,
+                 "label" : geojson[geojsonlist].name,
+                 "description" : geojson[geojsonlist].description,
+                 "icon" : geojson[geojsonlist].icon
+             }
+             cats.push(cat);
+         cat["interestPoints"].addData(geojson[geojsonlist].geojsonlist.features);
+         
+     }
+     console.log("<= Ok ! axios response  received and converted in array / make markers and layers !!!=>")
+ 
+
+
+
+
+
+
+     
+     function createInterestPoints () {
+    	    return new L.geoJson([], {
+    	        pointToLayer: function(feature, latlng) {
+
+    	        	
+    	            var smallIcon = L.icon({
+    	                iconUrl: "uploads/icons/" + /*icon-provider.js*/geojson[geojsonlist].icon,
+    	                //shadowUrl: 'icon-shadow.png',
+    	                iconSize:     [33, 44], // taille de l'icone
+    	                //shadowSize:   [50, 64], // taille de l'ombre
+    	                iconAnchor:   [16, 44], // point de l'icone qui correspondra à la position du marker
+    	                //shadowAnchor: [32, 64],  // idem pour l'ombre
+    	                popupAnchor:  [-3, -76] // point depuis lequel la popup doit s'ouvrir relativement à l'iconAnchor
+    	            });
+    	            var marker= L.marker(latlng, {icon: smallIcon})
+    	            
+    	            return marker
+    	        },
+    	        onEachFeature: function(feature, layer) {
+
+    	            var html = '';
+    	            if (feature.properties.name) {
+    	            	if (feature.properties.description) {
+        	            	if (feature.properties.logo) {
+        	    	            if (feature.properties.website) {
+                	                html +='<a href="' + feature.properties.website + '" target="_blank"><img class="thumbnail-logo" title="'+feature.properties.description+'" src="'+feature.properties.logo+'">  <b>' +feature.properties.name + '</b></br></a>';
+        	    	            }
+        	    	            else{
+                	                html +='<img class="thumbnail-logo" title="'+feature.properties.description+'" src="'+feature.properties.logo+'">  <b>' +feature.properties.name + '</b></br>';
+            	    	            
+            	            	}
+        	            	}
+    	            	}
+    	             }
+	            	html += '<p><img src="uploads/phone2.svg"> : '+ feature.properties.telephone+' </p><p><a href="mailto:'+feature.properties.mail+'"><i class="fas fa-envelope-open-text"></i> : '+feature.properties.mail+'</a></p>'
+	   	             
+    	            if (feature.properties.categories) {
+    	                html += 'Catégorie(s) : ' + feature.properties.categories;
+    	            }
+    	         	
+	                html += '<hr><a href="http://localhost:8000/actor/view/' + feature.properties.id + '" class="btn btn-xs btn-secondary"><span class="glyphicon glyphicon-zoom-in"></span> plus d\'info...</a>';
+    	        	var popup = L.popup({
+   	 			     autoClose:false,
+   	 			     closeOnEscapeKey: false,
+   	 			     closeOnClick:true,
+   	 			     closeButton:true,
+   	 			     className:'entry-marker',
+   	 			     maxWidth:300
+   	 					
+   	 				}).setLatLng([feature.properties.latitude, feature.properties.longitude])
+   	 				  .setContent(html)
+
+   	 				  
+   		 			  //.openOn(layer)
+		            layer//.addTo(map)
+		            .bindPopup(popup);
+    	        }
+    	    });
+    	}
+
+
+//////////////////////// command control
+
+     var command = L.control({position: 'topright'});
+     command.onAdd = function (map) {
+         var div = L.DomUtil.create('div', 'command');
+         for (var i = 0; i < cats.length; i++) {
+ 	        div.innerHTML += '<form><input id="'+cats[i]["id"]+'" type="checkbox"/><img src="uploads/icons/'+cats[i]["icon"]+'" title="'+cats[i]["description"]+'">'+cats[i]["label"]+'</form>';	    
+				
+               }
+         return div;
+     };
+
+
+
+	 
+	     
+     command.addTo(map);
+////////////////////////////////////////
+
+///////////////////////// search control
+
+ var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
+
+  var searchControl = L.esri.Geocoding.geosearch({
+    providers: [
+      arcgisOnline,
+      L.esri.Geocoding.mapServiceProvider({
+        label: 'States and Counties',
+        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
+        layers: [2, 3],
+        searchFields: ['NAME', 'STATE_NAME']
+      })
+    ]
   }).addTo(map);
-	  var command = L.control({position: 'topright'});
-	  
-	 // make entries array from hidden-item 
-	  var entries = [];
-	  var allcats = [];
-	  var cats = [];
-	  
-	  
-	 	Array.from(document.querySelectorAll('.hidden-item')).forEach((item) => {
-			var text='<div class="item js-marker"><h4>'+item.dataset.name+'</h4><img class="thumbnails" src="'+item.dataset.logo+'"><p><i class="fas fa-phone"></i> : '+ item.dataset.phone+' </p><a href="mailto:'+item.dataset.mail+'"><i class="fas fa-envelope-open-text"></i> : '+item.dataset.mail+'</a><p></p><a href="'+item.dataset.path+'">voir la fiche acteur...</a></div>'
-	 		  entries.push({'lat':item.dataset.lat,'lng':item.dataset.lng,'name':item.dataset.name,'logo':item.dataset.logo,'caticon':item.dataset.caticon,'catname':item.dataset.catname,'catid':item.dataset.catid,'catdescription':item.dataset.catdescription,'text':text});
-	 		  var point=[item.dataset.lat, item.dataset.lng];
-	 		  bounds.push(point);
-	 		  allcats.push(item.dataset.catid)
-	 	
-	 	})
-	 	console.log(entries);
-	 	console.log('bounds :' +bounds);
-	 	console.log(allcats)
-
-	 //command control
-
-	 command.onAdd = function (map) {
-	 	    var div = L.DomUtil.create('div', 'command');
+////////////////////////////////////////////////
+		 	
+	    var selectedCat;
+	 		for (var i = 0; i < cats.length; i++) {
+	 		document.getElementById(cats[i]["id"]).checked =true
+        	    if (document.getElementById(cats[i]["id"]).checked) {
+        	    	cats[i]["interestPoints"].addTo(map);
+    	        	for (var mark in cats[i].interestPoints._layers){
+	        		var addbound =cats[i].interestPoints._layers[mark].feature.geometry.coordinates.reverse()
+    	        	bounds.push(addbound);
+    	        	}
+        	    	
+       			 }
+	 		}
 	 		
-	 	    for (var i = 0; i < entries.length; i++) {
-	 	        div.innerHTML += '<form><input id="' + entries[i]["catid"] + '" type="checkbox"/><img src="uploads/icons/'+entries[i]["caticon"]+'" title="'+entries[i]["catdescription"]+ '"> ' + entries[i]["catname"]  + '</form>';	    }
-	 	    return div;
-	 	};
-	 	command.addTo(map);
 
-
-		 for (var i = 0; i < allcats.length; i++) {
-			    document.getElementById(allcats[i]).checked = true;
-			    cats.push(allcats[i])
-			    document.getElementById(allcats[i]).addEventListener("click", handleCommand, false);
-		}
-
-			function handleCommand() {
-				var i=this.getAttribute('id')
-			   	 if (this.checked) { 
-				   	 if (cats.includes(i)==false){				   	
-					cats.push(i)
-					
-
-					
-					
-					
-					}        
-			    } else {
-	    		    	cats=cats.filter(function(value,index,arr){
-							return value != i
-							
-	        		    	})
-	    		  }
-			   	console.log(cats) 
-			   	console.log(this.getAttribute('id'))
-			}
-
-
-	 	
-	   
-	   
-	   
-	   class EntryMarker {
-	 		constructor (lat,lng,icon,catdescription,logo,name,text,catid ){
-	 			this.text= text
-	 			this.lat=lat
-	 			this.lng=lng
-	 			  // custome icon from  actor category
-	 			  var myIcon = L.icon({
-	 				    iconUrl: '../uploads/icons/'+icon,
-	 				    iconSize:     [37, 47], // size of the icon
-	 				    shadowSize:   [64, 45], // size of the shadow
-	 				    iconAnchor:   [26, 63], // point of the icon which will correspond to marker's location
-	 				    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-	 				});
-	 	
-	 			this.shortText='<img class="thumbnail-logo" title="'+catdescription+'" src="'+logo+'">' +name
-	 			this.popup = L.popup({
-	 			     autoClose:false,
-	 			     closeOnEscapeKey: false,
-	 			     closeOnClick:true,
-	 			     closeButton:true,
-	 			     className:'entry-marker',
-	 			     maxWidth:300
-	 					
-	 				}).setLatLng([lat,lng])
-	 				  .setContent(this.shortText)
-
-		 			  //.openOn(map)
-	 	 			 L.marker([lat, lng],{icon:myIcon}).addTo(map)
-	 	 			.bindPopup(this.popup)	 
-		 			
-	 			}
-					
-	 			setActive(){
-	 				this.popup.getElement().classList.add('active')
-
-	 				}
-	 			unsetActive(){
-	 				this.popup.getElement().classList.remove('active')
-
-	 				}
-	 			addEventListener (event,cb){
-	 				this.popup.addEventListener('add', () =>{
-	 					this.popup.getElement().addEventListener(event,cb)
-	 					})
-	 				}
-	 			setContent (){
-	 				this.popup.setContent(this.text)
-	 				this.popup.getElement().classList.add('expanded')
-	 				this.popup.update()
-	 				}
-	 			resetContent(){
-	 				this.popup.setContent(this.shortText)
-	 				this.popup.getElement().classList.remove('expanded')
-	 				this.popup.update()
-	 				
-	 				}
-			
+	 		for (var i = 0; i < cats.length; i++) {
+	 		    document.getElementById(cats[i]["id"]).addEventListener("click", handleCommand, false);
 	 		}
 
+	    	function handleCommand() {
+	    	    var selectedCat;
+	    	    for (var i = 0; i < cats.length; i++) {
+	    	        if (cats[i]["id"] === this.id) {
+	    	            selectedCat = cats[i];
+	    	            break;
+	    	        }
+	    	    }
+	    	    if (this.checked) {
+	    	        selectedCat["interestPoints"].addTo(map);
+	    	        	for (var mark in cats[i].interestPoints._layers){
 
-	 for (var i = 0; i < entries.length; i++) {
+	        	        	if (!bounds.includes(cats[i].interestPoints._layers[mark].feature.geometry.coordinates.reverse())){
+	            	        	
+		    	        		var addbound =(cats[i].interestPoints._layers[mark].feature.geometry.coordinates.reverse())
+			    	        	bounds.push(addbound);
+								}						
+							}
 
- 			  let marker = new EntryMarker (entries[i]["lat"], entries[i]["lng"],entries[i]["caticon"], entries[i]["catdescription"],entries[i]["logo"], entries[i]["name"],entries[i]["text"],entries[i]["catid"]);
-     	      
-  		 	 marker.addEventListener('click', function(){
-  		 			if (activeMarker !==null){
-  		 			activeMarker.resetContent()
-  		 				}
-  		 		marker.setContent()
-  		 		activeMarker = marker
-  		 		 })	
-	 	}
- 	 		
+	    	        	
+	    	        	map.fitBounds(bounds);
+	        	  
+	    	        	
+	    	        	
+	    	    } else {
+	    	        map.removeLayer(selectedCat["interestPoints"]);
+		        	for (var mark in cats[i].interestPoints._layers){
+			        	var val=cats[i].interestPoints._layers[mark].feature.geometry.coordinates.reverse()
+	    	        bounds= bounds.filter(function(value, index, arr){
+						return value != val
+	        	        })
+		        	}
+	    	        	map.fitBounds(bounds);
+	    	    }
+	    	}	//end of handlecommand_
 
+	map.fitBounds(bounds);
+
+	})
+	//end of axios response
 	
-
-	    
-			
-	        	 
-	    	
-       	   	  
-				
-    		      
-	 
-           
-	
-
-
-
-
-
-
-        
-
-	 
-
-
-	 	map.fitBounds(bounds);
-		
-
-
-
-	   
-
-
-  </script>
-  
-  
+    
+            
+            	  </script>      

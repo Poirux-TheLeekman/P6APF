@@ -1,0 +1,184 @@
+ <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <script>	
+
+	 let hoverMarker = null
+	 let activeMarker = null   
+  var bounds=[];
+  var map = L.map('map',{scrollWheelZoom:false});
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+	  var command = L.control({position: 'topright'});
+	  
+	 // make entries array from hidden-item 
+	  var entries = [];
+	  var allcats = [];
+	  var cats = [];
+	  
+	  
+	 	Array.from(document.querySelectorAll('.hidden-item')).forEach((item) => {
+			var text='<div class="item js-marker"><h4>'+item.dataset.name+'</h4><img class="thumbnails" src="'+item.dataset.logo+'"><p><i class="fas fa-phone"></i> : '+ item.dataset.phone+' </p><a href="mailto:'+item.dataset.mail+'"><i class="fas fa-envelope-open-text"></i> : '+item.dataset.mail+'</a><p></p><a href="'+item.dataset.path+'">voir la fiche acteur...</a></div>'
+	 		  entries.push({'lat':item.dataset.lat,'lng':item.dataset.lng,'name':item.dataset.name,'logo':item.dataset.logo,'caticon':item.dataset.caticon,'catname':item.dataset.catname,'catid':item.dataset.catid,'catdescription':item.dataset.catdescription,'text':text});
+	 		  var point=[item.dataset.lat, item.dataset.lng];
+	 		  bounds.push(point);
+	 		  allcats.push(item.dataset.catid)
+	 	
+	 	})
+	 	console.log(entries);
+	 	console.log('bounds :' +bounds);
+	 	console.log(allcats)
+
+	 //command control
+
+	 command.onAdd = function (map) {
+	 	    var div = L.DomUtil.create('div', 'command');
+	 		
+	 	    for (var i = 0; i < entries.length; i++) {
+	 	        div.innerHTML += '<form><input id="' + entries[i]["catid"] + '" type="checkbox"/><img src="uploads/icons/'+entries[i]["caticon"]+'" title="'+entries[i]["catdescription"]+ '"> ' + entries[i]["catname"]  + '</form>';	    }
+	 	    return div;
+	 	};
+	 	command.addTo(map);
+
+
+		 for (var i = 0; i < allcats.length; i++) {
+			    document.getElementById(allcats[i]).checked = true;
+			    cats.push(allcats[i])
+			    document.getElementById(allcats[i]).addEventListener("click", handleCommand, false);
+		}
+
+			function handleCommand() {
+				var i=this.getAttribute('id')
+			   	 if (this.checked) { 
+				   	 if (cats.includes(i)==false){				   	
+					cats.push(i)
+					
+
+					
+					
+					
+					}        
+			    } else {
+	    		    	cats=cats.filter(function(value,index,arr){
+							return value != i
+							
+	        		    	})
+	    		  }
+			   	console.log(cats) 
+			   	console.log(this.getAttribute('id'))
+			}
+
+
+	 	
+	   
+	   
+	   
+	   class EntryMarker {
+	 		constructor (lat,lng,icon,catdescription,logo,name,text,catid ){
+	 			this.text= text
+	 			this.lat=lat
+	 			this.lng=lng
+	 			  // custome icon from  actor category
+	 			  var myIcon = L.icon({
+	 				    iconUrl: '../uploads/icons/'+icon,
+	 				    iconSize:     [37, 47], // size of the icon
+	 				    shadowSize:   [64, 45], // size of the shadow
+	 				    iconAnchor:   [26, 63], // point of the icon which will correspond to marker's location
+	 				    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+	 				});
+	 	
+	 			this.shortText='<img class="thumbnail-logo" title="'+catdescription+'" src="'+logo+'">' +name
+	 			this.popup = L.popup({
+	 			     autoClose:false,
+	 			     closeOnEscapeKey: false,
+	 			     closeOnClick:true,
+	 			     closeButton:true,
+	 			     className:'entry-marker',
+	 			     maxWidth:300
+	 					
+	 				}).setLatLng([lat,lng])
+	 				  .setContent(this.shortText)
+
+		 			  //.openOn(map)
+	 	 			 L.marker([lat, lng],{icon:myIcon}).addTo(map)
+	 	 			.bindPopup(this.popup)	 
+		 			
+	 			}
+					
+	 			setActive(){
+	 				this.popup.getElement().classList.add('active')
+
+	 				}
+	 			unsetActive(){
+	 				this.popup.getElement().classList.remove('active')
+
+	 				}
+	 			addEventListener (event,cb){
+	 				this.popup.addEventListener('add', () =>{
+	 					this.popup.getElement().addEventListener(event,cb)
+	 					})
+	 				}
+	 			setContent (){
+	 				this.popup.setContent(this.text)
+	 				this.popup.getElement().classList.add('expanded')
+	 				this.popup.update()
+	 				}
+	 			resetContent(){
+	 				this.popup.setContent(this.shortText)
+	 				this.popup.getElement().classList.remove('expanded')
+	 				this.popup.update()
+	 				
+	 				}
+			
+	 		}
+
+
+	 for (var i = 0; i < entries.length; i++) {
+
+ 			  let marker = new EntryMarker (entries[i]["lat"], entries[i]["lng"],entries[i]["caticon"], entries[i]["catdescription"],entries[i]["logo"], entries[i]["name"],entries[i]["text"],entries[i]["catid"]);
+     	      
+  		 	 marker.addEventListener('click', function(){
+  		 			if (activeMarker !==null){
+  		 			activeMarker.resetContent()
+  		 				}
+  		 		marker.setContent()
+  		 		activeMarker = marker
+  		 		 })	
+	 	}
+ 	 		
+
+	
+
+	    
+			
+	        	 
+	    	
+       	   	  
+				
+    		      
+	 
+           
+	
+
+
+
+
+
+
+        
+
+	 
+
+
+	 	map.fitBounds(bounds);
+		
+
+
+
+	   
+
+
+  </script>
+  
+  

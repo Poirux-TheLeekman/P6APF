@@ -16,7 +16,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
    var url='http://localhost:8000/'+'getentries2';
     axios.post(url).then(function(response){
 
-        var geojson= JSON.parse(response.data)
+        var geojson= JSON.parse(response.data.list)
         
         var parse= response.data
         console.log(geojson)
@@ -111,8 +111,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     			return  "transport.png";
     		} else if (categorie1 === "Mairie et municipalités") {
     			return  "government.png";
-    		} else if (categorie2 === "Hôtels et chambres d'hôtes") {
-    			return  "map-icons/hotels.png";
+    		} else if (categorie1 === "Santé, Soins palliatifs") {
+    			return  "medical.png";
+    		} else if (categorie1 === "Services hospîtaliers") {
+    			return  "health-medical.png";
     		} else if (categorie2 === "Petite Enfance") {
     			return  "map-icons/play-schools.png";
     		} else if (categorie3 === "Cyber cité") {
@@ -172,7 +174,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     	            if (feature.properties.categorie3) {
     	                html += ', ' + feature.properties.categorie3 + '.';
     	            }
-	                html += '<hr><a href="http://localhost:8000/actor/view/' + feature.properties.id + '"><a href="#" class="btn btn-xs btn-secondary"><span class="glyphicon glyphicon-zoom-in"></span> plus d\'info...</a></a>';
+	                html += '<hr><a href="http://localhost:8000/actor/view/' + feature.properties.id + '" class="btn btn-xs btn-secondary"><span class="glyphicon glyphicon-zoom-in"></span> plus d\'info...</a>';
     	        	var popup = L.popup({
    	 			     autoClose:false,
    	 			     closeOnEscapeKey: false,
@@ -200,7 +202,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
          for (var i = 0; i < cats.length; i++) {
              div.innerHTML += '<form><input id="' + cats[i]["id"] + '" type="checkbox"/>' + cats[i]["label"] + '</form>';
          }
-         div.innerHTML +='<a id="coche" href="#" class="btn btn-sm btn-primary">tous</a>';
          return div;
      };
 
@@ -210,19 +211,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	     
      command.addTo(map);
 
-     for (var i = 0; i < cats.length; i++) {
 		 	
-	 		document.getElementById(cats[i]["id"]).checked =true
-	 		}
-
-	 	function allCommand () {
+	    var selectedCat;
 	 		for (var i = 0; i < cats.length; i++) {
-			 	
 	 		document.getElementById(cats[i]["id"]).checked =true
 	 		}
 			console.log('okokok')	 
 	 		
-	 	}
 
 	for (var i = 0; i < cats.length; i++) {
     	    document.getElementById(cats[i]["id"]).addEventListener("change", handleCommand, false);
@@ -266,7 +261,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     	        console.log(bounds)
     	    }
     	}
-        document.getElementById("coche").addEventListener("click", allCommand, false);
       	
     	map.fitBounds(bounds);
     	
