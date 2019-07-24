@@ -9,26 +9,11 @@
 {% endblock %}
 {% block body %}
 
-<div class="example-wrapper">
+<div class="jumbotron text-center">
     <h1>Liste des acteurs</h1>
-   {% if is_granted('ROLE_USER') %}
-   <div class="jumbotron">
-    <div class="container">
-  			{{ form_start(form) }}
-    <div class="form_row">
-    	<div class="col">
-    	        {{ form_row(form.publish) }}
-    	</div>
-
-    	<div class="col">
-        <button class="btn btn-success">voir</button>
-    	</div>
-        </div>
-    {{ form_end(form) }}
      
     </div>
     </div>
-    {% endif %}
         <p>Cliquez sur un acteur pour voir les détails{% if app.user %}, ou utilisez les boutons dédiés pour modifier/supprimer un acteur{% endif %}</p>
 	<div class="actors-container">
 			<div class="list">
@@ -50,13 +35,21 @@
                 <p><i class="fas fa-phone"></i> : {{ actor.phone }}</p>
                 </a>
 				<p><a href="mailto:{{ actor.mail }}"><i class="fas fa-envelope-open-text"></i> : {{ actor.mail }}</a></p>	
-         	
+
              
              {% if app.user %}
+             <p> <i class="fab fa-accessible-icon"></i> :             
+             {% if actor.PmrAccess == true %}accessible pmr{% else %}non
+             {% endif %}</p>
 			<p class="admin-control">
 			<a href="{{ path('actor-update' ,{'id' : actor.id }) }}"><button class="btn btn-warning"><i class='fas fa-edit'></i></button></a>
 			<a data-confirm="Etes-vous certain de vouloir supprimer l'acteur {{ actor.id }} ?" href="{{ path('actor-delete' ,{'id' : actor.id }) }}"><button class="btn btn-danger"><i class='fas fa-trash'></i></button></a>
            </p>
+           {% else %}
+				      {% if actor.PmrAccess %}
+         	<p><i class="fab fa-accessible-icon"></i></p>
+                      {% endif %}           
+           
         	{% endif %}
              </div>
     	  {% endfor%}

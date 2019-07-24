@@ -33,6 +33,7 @@ class EntryType extends AbstractType
             ->add('website',UrlType::class)
             ->add('logo',UrlType::class)
             ->add('publish',HiddenType::class,['data'=>0])
+            ->add('PmrAccess',RadioType::class,['label'=> 'Accessible PMR'])
             ->add('categories',EntityType::class,[
                 'class'=>Category::class,
                 'choice_label'=>'name',

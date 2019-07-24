@@ -3,7 +3,7 @@
 {% block title %}Administration-Actor{% endblock %}
 {% block stylesheets %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
-
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 {% endblock %}
 {% block body %}
 <style>
@@ -48,6 +48,7 @@ html, body { width:100%;padding:0;margin:0; }
         {{ include('map/new-entry-map.html.twig') }}
 		<br />
         {{ form_row(formActor.categories) }}
+               <i class="fab fa-accessible-icon"></i> {{ form_row(formActor.PmrAccess) }}
 		
         {% if is_granted('ROLE_USER') %}
         {{ form_row(formActor.publish) }}

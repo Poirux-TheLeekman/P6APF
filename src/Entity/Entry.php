@@ -96,6 +96,11 @@ class Entry
      */
     private $Categories;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $PmrAccess;
+
 
     
     
@@ -266,6 +271,18 @@ class Entry
         if ($this->Categories->contains($category)) {
             $this->Categories->removeElement($category);
         }
+
+        return $this;
+    }
+
+    public function getPmrAccess(): ?bool
+    {
+        return $this->PmrAccess;
+    }
+
+    public function setPmrAccess(?bool $PmrAccess): self
+    {
+        $this->PmrAccess = $PmrAccess;
 
         return $this;
     }

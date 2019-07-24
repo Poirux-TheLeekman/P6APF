@@ -3,21 +3,32 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
- <h1> Connexion</h1>
- <form action="{{ path('login')}}" method="post">
-     <div class="form-goup">
-		<input placeholder="Adresse email" required name="_username" type="text" class="form-control">   
+
+ <div class="container text-center">
+  <h3> Connexion :</h3>
+	<div class="jumbotron">
+	<form action="{{ path('login')}}" method="post">
+	<div class="row text-center">
+		<div class="col">
+         <div class="form-goup">
+    		<input placeholder="Adresse email" required name="_username" type="text" class="form-control">   
+         </div>
+        </div> 
+        <div class="col">
+        
+         <div class="form-goup">
+    		<input placeholder="mot de passe" required name="_password" type="password" class="form-control">   
+         </div>
+         </div>
+         <div class="col">
+             <input type="hidden" name="goto" value="{{ path('admin') }}"/>
+         <div class="form-goup col-2">
+         <button type="submit" class="btn btn-success">Connexion</button>
+         </div>
+         </div>
      </div>
-     <div class="form-goup">
-		<input placeholder="mot de passe" required name="_password" type="password" class="form-control">   
-     </div>
-         <input type="hidden" name="goto" value="{{ path('admin') }}"/>
-     <div class="form-goup">
-     <button type="submit" class="btn btn-success">Connexion</button>
-     </div>
- </form>
+ 	</form>
+	</div>	
+</div>
+
 {% endblock %}

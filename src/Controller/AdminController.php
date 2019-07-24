@@ -65,16 +65,21 @@ class AdminController extends AbstractController
      * @Route ("/admin", name="admin")
      */
     public function home (Request $request){
-        
+        //get entries from db
         $entriesrepo=$this->getDoctrine()->getRepository(Entry::class);
         $entries=$entriesrepo->findAll();
-        $user = $this->getUser();
         $nbentries=count($entries);
+        
+        //get categories from db
+        $categoriesrepo=$this->getDoctrine()->getRepository(Category::class);
+        $categories=$categoriesrepo->findAll();
+        $nbcategories=count($categories);
+        // get user from request
+        $user = $this->getUser();
         $this->addFlash(
             'alert-success',
-           ' Bienvenue sur l\'interface d\'Admininisration ! '.$user->getEmail().'✅  ');
-        
-        return $this->render ('admin/index.html.twig',['nbentries'=>$nbentries]);
+           ' Bienvenue sur l\'interface d\'Admininisration ! '.$user->getEmail().'✅ ');
+        return $this->render ('admin/index.html.twig',['nbentries'=>$nbentries,'categories'=>$categories,'nbcategories'=>$nbcategories]);
     }
     /**
      * @Route("admin/category/delete/{id}", name="category-delete")

@@ -1,90 +1,52 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello AdminController!{% endblock %}
+{% block stylesheets %}
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 
+
+{% endblock %}
 {% block body %}
 
 
 <div class="example-wrapper">
-    <h1>Cartographic Directory : Interface d'Admininistration</h1>
+    <h1>Cartographic Directory : Interface d'Administration</h1>
 	
-	<div class="jumbotron">L'annuaire contient {{ nbentries }} acteurs et xx catégories .
+	<div class="jumbotron">L'annuaire contient <a href="{{ path('actors')}}">{{ nbentries }} acteurs</a> et <a href="{{ path('categories')}}">{{ nbcategories }} catégories</a>.
+	<p>Utilisez les pages :
+		<ul>
+		<li>"Acteurs" et "Catégories" pour modifier /supprimer un acteur ou une catégorie</li>
+		<li>"Nouvel Acteur" et "Nouvelle Catégorie" pour la création</li>
+		</ul>
+	</p>
+	<div class="text-right">
+			<a href="{{ path('front') }}"><button class=" btn btn-success">Voir la carte générale des acteurs publiés</button></a>
+		</div>
 	</div>
     <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">Type</th>
-      <th scope="col">Column heading</th>
-      <th scope="col">Column heading</th>
-      <th scope="col">Column heading</th>
+      <th scope="col">Catégories</th>
+      <th scope="col">Icone</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Attribution(s)</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="table-active">
-      <th scope="row">Active</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
+   
+	  	    {% for category in categories %}
+	
+
+    <tr class="light">
+      <th scope="row"><a href="{{ path('category-update',{'id' : category.id}) }}"><i class="fas fa-edit"></i>Cat{{ category.Id }}</a></th>
+      <td><img src="uploads/icons/{{ category.iconName }}"</td>
+      <td>{{ category.name }}</td>
+      <td>{%  for entrie in category.entries %} {{ entrie.name }}{% else %} <b>catégorie non attribuée </b>{% endfor %}</td>
     </tr>
-    <tr>
-      <th scope="row">Default</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
-    <tr class="table-primary">
-      <th scope="row">Primary</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
-    <tr class="table-secondary">
-      <th scope="row">Secondary</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
-    <tr class="table-success">
-      <th scope="row">Success</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
-    <tr class="table-danger">
-      <th scope="row">Danger</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
-    <tr class="table-warning">
-      <th scope="row">Warning</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
-    <tr class="table-info">
-      <th scope="row">Info</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
-    <tr class="table-light">
-      <th scope="row">Light</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
-    <tr class="table-dark">
-      <th scope="row">Dark</th>
-      <td>Column content</td>
-      <td>Column content</td>
-      <td>Column content</td>
-    </tr>
+    {% endfor %}
   </tbody>
 </table> 
-    <ul>
-        <li>Your controller at <code><a href="{{ '/media/ssd500Go/Documents/TP/P6APF/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/media/ssd500Go/Documents/TP/P6APF/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
-    </ul>
+  
 </div>
+
 {% endblock %}
