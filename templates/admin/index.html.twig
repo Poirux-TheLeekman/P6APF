@@ -41,7 +41,7 @@
       <th scope="row"><a href="{{ path('category-update',{'id' : category.id}) }}"><i class="fas fa-edit"></i>Cat{{ category.Id }}</a></th>
       <td><img src="uploads/icons/{{ category.iconName }}"</td>
       <td>{{ category.name }}</td>
-      <td>{%  for entrie in category.entries %} {{ entrie.name }}{% else %} <b>catégorie non attribuée </b>{% endfor %}</td>
+      <td>{%  for entrie in category.entries %} {{ entrie.name }}, {% else %} <b>catégorie non attribuée </b>{% endfor %}</td>
     </tr>
     {% endfor %}
   </tbody>

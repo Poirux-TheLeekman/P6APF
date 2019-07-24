@@ -8,70 +8,69 @@
 </style>
 {% endblock %}
 {% block body %}
-
-<div class="jumbotron text-center">
-    <h1>Liste des acteurs</h1>
-     
-    </div>
-    </div>
-        <p>Cliquez sur un acteur pour voir les détails{% if app.user %}, ou utilisez les boutons dédiés pour modifier/supprimer un acteur{% endif %}</p>
-	<div class="actors-container">
-			<div class="list">
-			{% for actor in actors %}
-			<div class="item js-marker" data-lat="{{ actor.lat }}" data-lng="{{ actor.lng }}"  data-name="{{ actor.name }}" data-logo="{{ actor.logo }}">
-				<a href="{{ path('actor-view' ,{'id' : actor.id }) }}">
-				<h4>{{ actor.name }} <img class="thumbnails" src="{{ actor.logo }}"></h4>
-				<p>
-         		<em>Catégorie(s) :</em>
-                 {% if not actor.categories.empty %}
-                          
-                            {% for category in actor.categories %}
-                            <img class="icon-thumbnails" alt="icone de la catégorie {{ category.name }}" src="{{ asset('uploads/icons/' ~ category.IconName) }}" title="{{ category.name }}">  
-                            {% endfor %}
-                         
-                 {% else %} aucune catégorie associée...
-                 {% endif %}
-                  </p>
-                <p><i class="fas fa-phone"></i> : {{ actor.phone }}</p>
-                </a>
-				<p><a href="mailto:{{ actor.mail }}"><i class="fas fa-envelope-open-text"></i> : {{ actor.mail }}</a></p>	
-
-             
-             {% if app.user %}
-             <p> <i class="fab fa-accessible-icon"></i> :             
-             {% if actor.PmrAccess == true %}accessible pmr{% else %}non
-             {% endif %}</p>
-			<p class="admin-control">
-			<a href="{{ path('actor-update' ,{'id' : actor.id }) }}"><button class="btn btn-warning"><i class='fas fa-edit'></i></button></a>
-			<a data-confirm="Etes-vous certain de vouloir supprimer l'acteur {{ actor.id }} ?" href="{{ path('actor-delete' ,{'id' : actor.id }) }}"><button class="btn btn-danger"><i class='fas fa-trash'></i></button></a>
-           </p>
-           {% else %}
-				      {% if actor.PmrAccess %}
-         	<p><i class="fab fa-accessible-icon"></i></p>
-                      {% endif %}           
-           
-        	{% endif %}
-             </div>
-    	  {% endfor%}
-			</div>
-          {{ include('map/map-actors.html.twig') }}
-    	   {% block javascripts %}
-            {{ encore_entry_script_tags('vendor') }}
-		    
-            <!-- Renders app.js & a webpack runtime.js file
-                <script src="/build/runtime.js"></script>
-                <script src="/build/app.js"></script> -->
-        {% endblock %}
-    	  <script>
-			
-
-		
-				
-			
-
-
+<div class="example-wrapper">
+    <div class="jumbotron text-center">
+        <h1>Liste des acteurs</h1>
+         
+        </div>
+            <p>Cliquez sur un acteur pour voir les détails{% if app.user %}, ou utilisez les boutons dédiés pour modifier/supprimer un acteur{% endif %}</p>
+    	<div class="actors-container">
+    			<div class="list">
+    			{% for actor in actors %}
+    			<div class="item js-marker" data-lat="{{ actor.lat }}" data-lng="{{ actor.lng }}"  data-name="{{ actor.name }}" data-logo="{{ actor.logo }}">
+    				<a href="{{ path('actor-view' ,{'id' : actor.id }) }}">
+    				<h4>{{ actor.name }} <img class="thumbnails" src="{{ actor.logo }}"></h4>
+    				<p>
+             		<em>Catégorie(s) :</em>
+                     {% if not actor.categories.empty %}
+                              
+                                {% for category in actor.categories %}
+                                <img class="icon-thumbnails" alt="icone de la catégorie {{ category.name }}" src="{{ asset('uploads/icons/' ~ category.IconName) }}" title="{{ category.name }}">  
+                                {% endfor %}
+                             
+                     {% else %} aucune catégorie associée...
+                     {% endif %}
+                      </p>
+                    <p><i class="fas fa-phone"></i> : {{ actor.phone }}</p>
+                    </a>
+    				<p><a href="mailto:{{ actor.mail }}"><i class="fas fa-envelope-open-text"></i> : {{ actor.mail }}</a></p>	
+    
+                 
+                 {% if app.user %}
+                 <p> <i class="fab fa-accessible-icon"></i> :             
+                 {% if actor.PmrAccess == true %}accessible pmr{% else %}non
+                 {% endif %}</p>
+    			<p class="admin-control">
+    			<a href="{{ path('actor-update' ,{'id' : actor.id }) }}"><button class="btn btn-warning"><i class='fas fa-edit'></i></button></a>
+    			<a data-confirm="Etes-vous certain de vouloir supprimer l'acteur {{ actor.id }} ?" href="{{ path('actor-delete' ,{'id' : actor.id }) }}"><button class="btn btn-danger"><i class='fas fa-trash'></i></button></a>
+               </p>
+               {% else %}
+    				      {% if actor.PmrAccess %}
+             	<p><i class="fab fa-accessible-icon"></i></p>
+                          {% endif %}           
+               
+            	{% endif %}
+                 </div>
+        	  {% endfor%}
+    			</div>
+              {{ include('map/map-actors.html.twig') }}
+        	   {% block javascripts %}
+                {{ encore_entry_script_tags('vendor') }}
+    		    
+                <!-- Renders app.js & a webpack runtime.js file
+                    <script src="/build/runtime.js"></script>
+                    <script src="/build/app.js"></script> -->
+            {% endblock %}
+        	  <script>
+    			
+    
     		
-    	  </script>
-    </div>	
+    				
+    			
+    
+    
+        		
+        	  </script>	
+    </div>
 </div>
 {% endblock %}
