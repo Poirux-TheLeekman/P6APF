@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block title %}Administration-Category{% endblock %}
 {% block body %}
-<div class="example-wrapper">
+<div class="container">
     <h1>Entrer une nouvelle catégory</h1>
  
     Remplissez le formulaire suivant pour créer une nouvelle catégory:
+    <br><br>
     	{{ form_start(form) }}
     	<div class="form-group">
     		<label for="">Nom de la Catégorie</label>
@@ -16,7 +16,7 @@
     		    	{{ form_widget(form.description) }}
     	</div>
     	<div>
-        <img style=" max-width: 80%; display: block; max-height: 200px" src="{{ asset('uploads/icons/' ~  icon) }}" alt="{{icon }}">               
+        <img id="iconcat"  src="{{ asset('uploads/icons/' ~  icon) }}" alt="{{icon }}" title="{{ icon }}" >               
         </div>
     	<div class="form-group file-field">
        		    	{{ form_widget(form.icon) }}
@@ -31,6 +31,16 @@
     	{{ form_end(form) }}    
 </div>
         {% block javascripts %}
+        
+<script type="text/javascript">
+
+</script>
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script>
+</script>
+        </script>
+        
+        
        
         {% endblock %}
 {% endblock %}

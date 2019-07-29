@@ -11,11 +11,6 @@
 {% block body %}
 
 
-
-{% for actor in actors %}
-			<div class="hidden-item js-marker" data-lat="{{ actor.lat }}" data-lng="{{ actor.lng }}" data-phone="{{ actor.phone }}" data-path="{{ path('actor-view' ,{'id' : actor.id }) }}"  data-name="{{ actor.name }}" data-mail="{{ actor.mail }}"data-logo="{{ actor.logo }}" {% for category in actor.categories %} data-catname="{{ category.name }}" data-catdescription="{{ category.description }}"data-caticon="{{ category.IconName }}" data-catid="{{ category.id }}"{% endfor %}"></div>
-{% endfor %}
-
 <div class="example-wrapper">
           {{ include('map/map.html.twig') }}
  

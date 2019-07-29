@@ -39,7 +39,8 @@ margin:-1rem -1rem -1rem -1rem;
 }
 
 #map{
-	height:100vh;
+	height:80vh;
+	width:100%;
 	background-color:#CCCCCC;
 	position:sticky!important;	
 	top:0;
@@ -190,4 +191,28 @@ margin:-1rem -1rem -1rem -1rem;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
     min-width: 200px;
+	width:100%;
+	display:flex;
+	  flex-wrap: wrap;
+	border-style: inset;
+	border-color:#2C3E50
+}
+ #category_name{
+	width:70%!important
+}
+#category_description{
+	width:65%
+}
+#iconcat{
+	max-width: 80%;
+	 display: block; 
+	max-height: 100px
+}
+.control-form{
+	margin-right:10px;
+}
+#sticky-footer {
+  flex-shrink: none;
+  background-color:#2C3E50!important;
+  color:white;
 }
