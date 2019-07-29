@@ -3,7 +3,7 @@
 {% block title %}Administration-Actor{% endblock %}
 {% block stylesheets %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
-<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 {% block body %}
 <style>
@@ -35,17 +35,24 @@ html, body { width:100%;padding:0;margin:0; }
         {{ form_row(formActor.fax) }}
         {{ form_row(formActor.website) }}
         {{ form_row(formActor.logo) }}
-        <b> Entrer l'adresse </b>
-<div id="search">
-        {{ form_row(formActor.address) }}
-<button type="button" onclick="addr_search();">Rechercher</button>
-<div id="results"></div>
-</div>
-        <b id="infomap">ou déplacer le point sur la carte</b>
-        {{ form_row(formActor.lat) }}
-        {{ form_row(formActor.lng) }}
+<div style="display:flex" "id="search">
+		 <div style="width:50%; padding:10px">     
+		 		 <b>Adresse / Geolocalisation</b>
+		     <br>Entrer un nom de Commune*
+		    {{ form_row(formActor.address) }}
+		 <button type="button" onclick="addr_search();">Rechercher</button>
+		<div id="results"></div>
+		</div>
+		<div>
+				*Ajuster en déplaçant le point sur la carte<br>
+		        {{ include('map/new-entry-map.html.twig') }}
+                {{ form_row(formActor.lat) }}
+                {{ form_row(formActor.lng) }}
+		</div>
+		
+		 </div>
+
         
-        {{ include('map/new-entry-map.html.twig') }}
 		<br />
         {{ form_row(formActor.categories) }}
                <i class="fab fa-accessible-icon"></i> {{ form_row(formActor.PmrAccess) }}

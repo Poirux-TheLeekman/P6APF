@@ -1,3 +1,6 @@
+<div id=control>
+
+</div>
 <div id="map"></div>
   
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
@@ -20,8 +23,18 @@
 
   	  
 <script>
+var invocation = new XMLHttpRequest();
+var url = 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer';  
+function callOtherDomain() {
+  if(invocation) {    
+    invocation.open('GET', url, true);
+    invocation.onreadystatechange = handler;
+    invocation.send(); 
+  }
+}
 
-
+//var L = require('leaflet');
+//var esri = require('esri-leaflet');
 
 var bounds=[];
 
@@ -126,35 +139,27 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
      command.onAdd = function (map) {
          var div = L.DomUtil.create('div', 'command');
          for (var i = 0; i < cats.length; i++) {
- 	        div.innerHTML += '<form><input id="'+cats[i]["id"]+'" type="checkbox"/><img src="uploads/icons/'+cats[i]["icon"]+'" title="'+cats[i]["description"]+'">'+cats[i]["label"]+'</form>';	    
+ 	        div.innerHTML += '<form class="control-form"><input id="'+cats[i]["id"]+'" type="checkbox"/><img src="uploads/icons/'+cats[i]["icon"]+'" title="'+cats[i]["description"]+'">'+cats[i]["label"]+'</form>';	    
 				
                }
          return div;
      };
+     var commandControl = command.addTo(map);
+     
+     // Call the getContainer routine.
+     var htmlObject = commandControl.getContainer();
+     // Get the desired parent node.
+     var a = document.getElementById('control');
 
-
-
-	 
-	     
-     command.addTo(map);
+     // Finally append that node to the new parent, recursively searching out and re-parenting nodes.
+     function setParent(el, newParent)
+     {
+        newParent.appendChild(el);
+     }
+     setParent(htmlObject, a);
+   ////////////////////////////////////////////////
 ////////////////////////////////////////
 
-///////////////////////// search control
-
- var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
-
-  var searchControl = L.esri.Geocoding.geosearch({
-    providers: [
-      arcgisOnline,
-      L.esri.Geocoding.mapServiceProvider({
-        label: 'States and Counties',
-        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
-        layers: [2, 3],
-        searchFields: ['NAME', 'STATE_NAME']
-      })
-    ]
-  }).addTo(map);
-////////////////////////////////////////////////
 		 	
 	    var selectedCat;
 	 		for (var i = 0; i < cats.length; i++) {
@@ -212,7 +217,28 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 	map.fitBounds(bounds);
 
-	})
+	}) 	//end of axios response
+	////////////////////////////////////////////////
+	
+	
+	///////////////////////// search control
+
+ var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
+
+  var searchControl = L.esri.Geocoding.geosearch({
+    providers: [
+      arcgisOnline,
+      L.esri.Geocoding.mapServiceProvider({
+        label: 'States and Counties',
+        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
+        layers: [2, 3],
+        searchFields: ['NAME', 'STATE_NAME']
+      })
+    ]
+  }).addTo(map);
+
+
+	
 	//end of axios response
 	
     

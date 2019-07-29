@@ -31,7 +31,7 @@
                      {% else %} aucune catégorie associée...
                      {% endif %}
                       </p>
-                    <p><i class="fas fa-phone"></i> : {{ actor.phone }}</p>
+                    <p><i class="fas fa-phone"></i> :{%   if actor.phone |length ==9 %} 0{{ actor.phone }}{% else %}{{ actor.phone }}{% endif %}</p>
                     </a>
     				<p><a href="mailto:{{ actor.mail }}"><i class="fas fa-envelope-open-text"></i> : {{ actor.mail }}</a></p>	
     

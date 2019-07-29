@@ -1,0 +1,17 @@
+{
+  "build/apf.css": "/build/apf.css",
+  "build/apf.js": "/build/apf.js",
+  "build/app.css": "/build/app.css",
+  "build/app.js": "/build/app.js",
+  "build/entries-marker.js": "/build/entries-marker.js",
+  "build/mainmap.css": "/build/mainmap.css",
+  "build/mainmap.js": "/build/mainmap.js",
+  "build/marker-create.css": "/build/marker-create.css",
+  "build/marker-create.js": "/build/marker-create.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendor.js": "/build/vendor.js",
+  "build/vendors~apf~entries-marker~vendor.js": "/build/vendors~apf~entries-marker~vendor.js",
+  "build/vendors~app.js": "/build/vendors~app.js",
+  "build/vendors~entries-marker~vendor.js": "/build/vendors~entries-marker~vendor.js",
+  "build/vendors~vendor.js": "/build/vendors~vendor.js"
+}

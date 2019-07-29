@@ -1,0 +1,59 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~app.js",
+        "/build/app.js"
+      ],
+      "css": [
+        "/build/app.css"
+      ]
+    },
+    "apf": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~apf~entries-marker~vendor.js",
+        "/build/apf.js"
+      ],
+      "css": [
+        "/build/apf.css"
+      ]
+    },
+    "vendor": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~apf~entries-marker~vendor.js",
+        "/build/vendors~entries-marker~vendor.js",
+        "/build/vendors~vendor.js",
+        "/build/vendor.js"
+      ]
+    },
+    "marker-create": {
+      "js": [
+        "/build/runtime.js",
+        "/build/marker-create.js"
+      ],
+      "css": [
+        "/build/marker-create.css"
+      ]
+    },
+    "entries-marker": {
+      "js": [
+        "/build/runtime.js",
+        "/build/vendors~apf~entries-marker~vendor.js",
+        "/build/vendors~entries-marker~vendor.js",
+        "/build/entries-marker.js"
+      ]
+    },
+    "mainmap": {
+      "js": [
+        "/build/runtime.js",
+        "/build/mainmap.js"
+      ],
+      "css": [
+        "/build/mainmap.css"
+      ]
+    }
+  }
+}
