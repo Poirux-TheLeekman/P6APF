@@ -3,8 +3,8 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+ <div><h1> Connexion</h1></div>
  
- <h1> Connexion</h1>
  <form action="{{ path('login')}}" method="post">
      <div class="form-goup">
 		<input placeholder="Adresse email" required name="_username" type="text" class="form-control">   
@@ -17,5 +17,4 @@
      <button type="submit" class="btn btn-succes">Connexion</button>
      </div>
  </form>
-
 {% endblock %}
