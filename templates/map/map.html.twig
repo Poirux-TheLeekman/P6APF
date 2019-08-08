@@ -44,7 +44,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);		  
 
-   var url='http://localhost:8000/'+'getentries';
+   var url=window.location.href+'getentries';
     axios.post(url).then(function(response){
 
         var geojson= JSON.parse(response.data.tab)
@@ -106,13 +106,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         	            	}
     	            	}
     	             }
-	            	html += '<p><img src="uploads/phone2.svg"> : '+ feature.properties.telephone+' </p><p><a href="mailto:'+feature.properties.mail+'"><i class="fas fa-envelope-open-text"></i> : '+feature.properties.mail+'</a></p>'
+	            	html += '<p><img src="uploads/phone2.svg"> : '+ feature.properties.telephone +' </p><p><a href="mailto:'+feature.properties.mail+'"><i class="fas fa-envelope-open-text"></i> : '+feature.properties.mail+'</a></p>'
 	   	             
     	            if (feature.properties.categories) {
     	                html += 'Catégorie(s) : ' + feature.properties.categories;
     	            }
     	         	
-	                html += '<hr><a href="http://localhost:8000/actor/view/' + feature.properties.id + '" class="btn btn-xs btn-secondary"><span class="glyphicon glyphicon-zoom-in"></span> plus d\'info...</a>';
+	                html += '<hr><a href="'+window.location.href+"actor/view/"+ feature.properties.id + '" class="btn btn-xs btn-secondary"><span class="glyphicon glyphicon-zoom-in"></span> plus d\'info...</a>';
     	        	var popup = L.popup({
    	 			     autoClose:false,
    	 			     closeOnEscapeKey: false,
@@ -193,12 +193,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 	        	        	if (!bounds.includes(cats[i].interestPoints._layers[mark].feature.geometry.coordinates.reverse())){
 	            	        	
-		    	        		var addbound =(cats[i].interestPoints._layers[mark].feature.geometry.coordinates.reverse())
+		    	        		var addbound =(cats[i].interestPoints._layers[mark].feature.geometry.coordinates)
 			    	        	bounds.push(addbound);
 								}						
-							}
-
-	    	        	
+							}	    	        	
 	    	        	map.fitBounds(bounds);
 	        	  
 	    	        	
@@ -214,9 +212,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	    	        	map.fitBounds(bounds);
 	    	    }
 	    	}	//end of handlecommand_
-
 	map.fitBounds(bounds);
-
 	}) 	//end of axios response
 	////////////////////////////////////////////////
 	
