@@ -124,7 +124,7 @@ class FrontController extends AbstractController
     public function Login (){
         
         
-        return $this->render ('admin/login.html.twig');
+        return $this->render ('front/login.html.twig');
     }
 
 
@@ -226,6 +226,21 @@ class FrontController extends AbstractController
         return md5(uniqid());
     }
 
+   
+    ////////////////////
+    
+    
+    /**
+     *
+     * @Route ("/legalnotice", name="legalnotice")
+     */
+    public function Legalnotice (){
+        
+        
+        return $this->render ('front/legalnotice.html.twig');
+    }
+    
+    
     
     
     
